@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace ECollectionApp.CollectionService
+namespace ECollectionApp.GatewayApi
 {
     public class Program
     {
@@ -11,6 +12,9 @@ namespace ECollectionApp.CollectionService
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => {
                     webBuilder.UseStartup<Startup>();
+                })
+                .ConfigureAppConfiguration((context, config)=> {
+                    config.AddJsonFile("ocelot.json", false, true);
                 });
     }
 }

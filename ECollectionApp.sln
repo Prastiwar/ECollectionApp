@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECollectionApp.WebUI", "src\ECollectionApp.WebUI\ECollectionApp.WebUI.csproj", "{45C62FF5-2677-481D-A00A-D37D136440B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECollectionApp.AccountService", "src\ECollectionApp.AccountService\ECollectionApp.AccountService.csproj", "{E5C7F36A-1347-44C3-A9BB-CCC4B754F362}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECollectionApp.AccountService", "src\ECollectionApp.AccountService\ECollectionApp.AccountService.csproj", "{E5C7F36A-1347-44C3-A9BB-CCC4B754F362}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECollectionApp.CollectionService", "src\ECollectionApp.CollectionService\ECollectionApp.CollectionService.csproj", "{65A5EF46-B89C-4B4A-BA22-04AA7E6B1184}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECollectionApp.CollectionService", "src\ECollectionApp.CollectionService\ECollectionApp.CollectionService.csproj", "{65A5EF46-B89C-4B4A-BA22-04AA7E6B1184}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECollectionApp.GateawayApi", "src\ECollectionApp.GateawayApi\ECollectionApp.GateawayApi.csproj", "{9E2274BA-BED2-4CB1-BA04-869B2F1D6C49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{65A5EF46-B89C-4B4A-BA22-04AA7E6B1184}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65A5EF46-B89C-4B4A-BA22-04AA7E6B1184}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65A5EF46-B89C-4B4A-BA22-04AA7E6B1184}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E2274BA-BED2-4CB1-BA04-869B2F1D6C49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E2274BA-BED2-4CB1-BA04-869B2F1D6C49}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E2274BA-BED2-4CB1-BA04-869B2F1D6C49}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E2274BA-BED2-4CB1-BA04-869B2F1D6C49}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

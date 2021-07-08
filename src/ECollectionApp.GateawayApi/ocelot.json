@@ -1,0 +1,28 @@
+{
+    "Routes": [
+        {
+            "DownstreamPathTemplate": "/api/collection",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 53129
+                }
+            ],
+            "UpstreamPathTemplate": "/gateway/collection",
+            "UpstreamHttpMethod": [ "POST", "PUT", "GET" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/collection/{id}",
+            "DownstreamScheme": "https",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 53129
+                }
+            ],
+            "UpstreamPathTemplate": "/gateway/collection/{id}",
+            "UpstreamHttpMethod": [ "GET", "DELETE" ]
+        }
+    ]
+}

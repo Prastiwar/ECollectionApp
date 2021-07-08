@@ -20,11 +20,12 @@ namespace ECollectionApp.WebUI.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
+            if (true) // if signed in
+            {
+                // TODO: Show collection groups
+                return View();
+            }
+            // TODO: Show sign in/up page
             return View();
         }
 
