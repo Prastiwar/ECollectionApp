@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECollectionApp.AccountServi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECollectionApp.CollectionService", "src\ECollectionApp.CollectionService\ECollectionApp.CollectionService.csproj", "{65A5EF46-B89C-4B4A-BA22-04AA7E6B1184}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECollectionApp.GateawayApi", "src\ECollectionApp.GateawayApi\ECollectionApp.GateawayApi.csproj", "{9E2274BA-BED2-4CB1-BA04-869B2F1D6C49}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECollectionApp.GatewayApi", "src\ECollectionApp.GateawayApi\ECollectionApp.GatewayApi.csproj", "{9E2274BA-BED2-4CB1-BA04-869B2F1D6C49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

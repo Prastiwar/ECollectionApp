@@ -2,27 +2,51 @@
     "Routes": [
         {
             "DownstreamPathTemplate": "/api/collection",
-            "DownstreamScheme": "https",
+            "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
                     "Host": "localhost",
                     "Port": 53129
                 }
             ],
-            "UpstreamPathTemplate": "/gateway/collection",
+            "UpstreamPathTemplate": "/collection",
             "UpstreamHttpMethod": [ "POST", "PUT", "GET" ]
         },
         {
             "DownstreamPathTemplate": "/api/collection/{id}",
-            "DownstreamScheme": "https",
+            "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
                     "Host": "localhost",
                     "Port": 53129
                 }
             ],
-            "UpstreamPathTemplate": "/gateway/collection/{id}",
+            "UpstreamPathTemplate": "/collection/{id}",
             "UpstreamHttpMethod": [ "GET", "DELETE" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/account/login",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 37337
+                }
+            ],
+            "UpstreamPathTemplate": "/login",
+            "UpstreamHttpMethod": [ "POST" ]
+        },
+        {
+            "DownstreamPathTemplate": "/api/account/logout",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 37337
+                }
+            ],
+            "UpstreamPathTemplate": "/logout",
+            "UpstreamHttpMethod": [ "POST" ]
         }
     ]
 }

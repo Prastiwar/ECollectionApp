@@ -1,38 +1,51 @@
-﻿using ECollectionApp.WebUI.Models;
+﻿using ECollectionApp.WebUI.Clients;
+using ECollectionApp.WebUI.Data;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ECollectionApp.WebUI.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ICollectionClient collectionClient, IAccountClient accountClient, ILogger<HomeController> logger)
         {
-            _logger = logger;
+            CollectionClient = collectionClient;
+            AccountClient = accountClient;
+            Logger = logger;
         }
 
-        public IActionResult Index()
+        protected ICollectionClient CollectionClient { get; }
+
+        protected IAccountClient AccountClient { get; }
+
+        protected ILogger<HomeController> Logger { get; }
+
+        public async Task<IActionResult> Login()
         {
-            if (true) // if signed in
+            if (!User.Identity.IsAuthenticated)
             {
-                // TODO: Show collection groups
-                return View();
+                string token = await AccountClient.Login();
             }
-            // TODO: Show sign in/up page
-            return View();
+            return View("Index");
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public async Task<IActionResult> Index()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            if (User.Identity.IsAuthenticated)
+            {
+                string token = await HttpContext.GetTokenAsync(JwtBearerDefaults.AuthenticationScheme);
+                string token2 = User.Identity.Name;
+                //HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, Api.Collection.GetGroups());
+                //request.Headers.Add(JwtBearerDefaults.AuthenticationScheme, token);
+                IEnumerable<CollectionGroup> groups = await CollectionClient.GetGroupsAsync();
+                return View("CollectionGroups", groups);
+            }
+            return View();
         }
     }
 }

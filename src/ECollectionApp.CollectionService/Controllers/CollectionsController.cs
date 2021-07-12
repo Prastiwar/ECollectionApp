@@ -1,4 +1,5 @@
 ﻿using ECollectionApp.CollectionService.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,7 @@ namespace ECollectionApp.CollectionService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CollectionsController : ControllerBase
     {
         public CollectionsController(CollectionDbContext context, ILogger<CollectionsController> logger)

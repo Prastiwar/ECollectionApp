@@ -13,8 +13,10 @@ namespace ECollectionApp.GatewayApi
                 .ConfigureWebHostDefaults(webBuilder => {
                     webBuilder.UseStartup<Startup>();
                 })
-                .ConfigureAppConfiguration((context, config)=> {
-                    config.AddJsonFile("ocelot.json", false, true);
+                .ConfigureAppConfiguration((context, builder) => {
+                    builder.AddJsonFile("appsettings.json", false, true);
+                    builder.AddJsonFile("appsettings.auth.json", false, true);
+                    builder.AddJsonFile("ocelot.json", false, true);
                 });
     }
 }
