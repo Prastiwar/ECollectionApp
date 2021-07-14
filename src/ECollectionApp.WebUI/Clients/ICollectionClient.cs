@@ -7,5 +7,7 @@ namespace ECollectionApp.WebUI.Clients
     public interface ICollectionClient
     {
         Task<IEnumerable<CollectionGroup>> GetGroupsAsync();
+
+        ICollectionClient WithToken(string token);
     }
 }

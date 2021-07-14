@@ -1,7 +1,7 @@
 ﻿using ECollectionApp.CollectionService.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ECollectionApp.CollectionService
+namespace ECollectionApp.CollectionService.Data
 {
     public class CollectionDbContext : DbContext
     {
@@ -12,8 +12,8 @@ namespace ECollectionApp.CollectionService
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
             modelBuilder.Entity<Collection>();
+            Database.EnsureCreated();
         }
     }
 }

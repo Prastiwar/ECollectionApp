@@ -1,4 +1,5 @@
-﻿using ECollectionApp.CollectionService.Models;
+﻿using ECollectionApp.CollectionService.Data;
+using ECollectionApp.CollectionService.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,23 +17,23 @@ namespace ECollectionApp.CollectionService.Controllers
     {
         public CollectionsController(CollectionDbContext context, ILogger<CollectionsController> logger)
         {
-            this.context = context;
-            this.logger = logger;
+            Context = context;
+            Logger = logger;
         }
 
-        private readonly CollectionDbContext context;
+        protected CollectionDbContext Context;
 
-        private readonly ILogger<CollectionsController> logger;
+        protected ILogger<CollectionsController> Logger;
 
         // GET: api/Collections
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Collection>>> GetCollection() => await context.Collections.ToListAsync();
+        public async Task<ActionResult<IEnumerable<Collection>>> GetCollection() => await Context.Collections.ToListAsync();
 
         // GET: api/Collections/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Collection>> GetCollection(int id)
         {
-            Collection collection = await context.Collections.FindAsync(id);
+            Collection collection = await Context.Collections.FindAsync(id);
             if (collection == null)
             {
                 return NotFound();
@@ -49,10 +50,10 @@ namespace ECollectionApp.CollectionService.Controllers
             {
                 return BadRequest();
             }
-            context.Entry(collection).State = EntityState.Modified;
+            Context.Entry(collection).State = EntityState.Modified;
             try
             {
-                await context.SaveChangesAsync();
+                await Context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException ex)
             {
@@ -60,7 +61,7 @@ namespace ECollectionApp.CollectionService.Controllers
                 {
                     return NotFound();
                 }
-                logger.LogError(ex, $"Error occured while executing {nameof(PutCollection)}");
+                Logger.LogError(ex, $"Error occured while executing {nameof(PutCollection)}");
                 throw;
             }
             return NoContent();
@@ -71,8 +72,8 @@ namespace ECollectionApp.CollectionService.Controllers
         [HttpPost]
         public async Task<ActionResult<Collection>> PostCollection(Collection collection)
         {
-            context.Collections.Add(collection);
-            await context.SaveChangesAsync();
+            Context.Collections.Add(collection);
+            await Context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetCollection), new { id = collection.Id }, collection);
         }
 
@@ -80,16 +81,16 @@ namespace ECollectionApp.CollectionService.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCollection(int id)
         {
-            Collection collection = await context.Collections.FindAsync(id);
+            Collection collection = await Context.Collections.FindAsync(id);
             if (collection == null)
             {
                 return NotFound();
             }
-            context.Collections.Remove(collection);
-            await context.SaveChangesAsync();
+            Context.Collections.Remove(collection);
+            await Context.SaveChangesAsync();
             return NoContent();
         }
 
-        private bool CollectionExists(int id) => context.Collections.Any(e => e.Id == id);
+        private bool CollectionExists(int id) => Context.Collections.Any(e => e.Id == id);
     }
 }

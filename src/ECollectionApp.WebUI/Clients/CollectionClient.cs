@@ -12,12 +12,13 @@ namespace ECollectionApp.WebUI.Clients
 
         protected HttpClient Client { get; }
 
-        public async Task<IEnumerable<CollectionGroup>> GetGroupsAsync(/*string token*/)
+        protected string Token { get; set; }
+
+        public async Task<IEnumerable<CollectionGroup>> GetGroupsAsync()
         {
-            //string token = await HttpContext.GetTokenAsync(JwtBearerDefaults.AuthenticationScheme);
-            //string token2 = User.Identity.Name;
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, Api.Collection.GetGroups());
-            //request.Headers.Add(JwtBearerDefaults.AuthenticationScheme, token);
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, Api.Collection.GroupsUrl());
+            string scheme = Client.DefaultRequestHeaders.Authorization.Scheme;
+            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(scheme, Token);
             HttpResponseMessage response = await Client.SendAsync(request);
             response.EnsureSuccessStatusCode();
             using (System.IO.Stream responseStream = await response.Content.ReadAsStreamAsync())
@@ -25,6 +26,12 @@ namespace ECollectionApp.WebUI.Clients
                 // TODO: Use interface for serializator
                 return await JsonSerializer.DeserializeAsync<IEnumerable<CollectionGroup>>(responseStream);
             }
+        }
+
+        public ICollectionClient WithToken(string token)
+        {
+            Token = token;
+            return this;
         }
     }
 }

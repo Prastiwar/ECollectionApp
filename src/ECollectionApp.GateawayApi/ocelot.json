@@ -9,7 +9,7 @@
                     "Port": 53129
                 }
             ],
-            "UpstreamPathTemplate": "/collection",
+            "UpstreamPathTemplate": "/api/collection",
             "UpstreamHttpMethod": [ "POST", "PUT", "GET" ]
         },
         {
@@ -21,32 +21,34 @@
                     "Port": 53129
                 }
             ],
-            "UpstreamPathTemplate": "/collection/{id}",
+            "UpstreamPathTemplate": "/api/collection/{id}",
             "UpstreamHttpMethod": [ "GET", "DELETE" ]
         },
+
+
         {
-            "DownstreamPathTemplate": "/api/account/login",
+            "DownstreamPathTemplate": "/api/collection-groups",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
                     "Host": "localhost",
-                    "Port": 37337
+                    "Port": 53129
                 }
             ],
-            "UpstreamPathTemplate": "/login",
-            "UpstreamHttpMethod": [ "POST" ]
+            "UpstreamPathTemplate": "/api/collection-groups",
+            "UpstreamHttpMethod": [ "POST", "PUT", "GET" ]
         },
         {
-            "DownstreamPathTemplate": "/api/account/logout",
+            "DownstreamPathTemplate": "/api/collection-groups/{id}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
                     "Host": "localhost",
-                    "Port": 37337
+                    "Port": 53129
                 }
             ],
-            "UpstreamPathTemplate": "/logout",
-            "UpstreamHttpMethod": [ "POST" ]
+            "UpstreamPathTemplate": "/api/collection-groups/{id}",
+            "UpstreamHttpMethod": [ "GET", "DELETE" ]
         }
     ]
 }

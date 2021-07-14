@@ -4,16 +4,13 @@
     {
         public static class Collection
         {
-            public static string GetGroups() => "api/collection-groups";
+            public static string CollectionsUrl() => "api/collections";
 
-            public static string GetGroup(int id) => $"{GetGroups()}/{id}";
-        }
+            public static string CollectionUrl(int id) => $"{CollectionsUrl()}/{id}";
 
-        public static class Account
-        {
-            public static string SignIn() => "api/login";
+            public static string GroupsUrl() => "api/collection-groups";
 
-            public static string SignOut() => "api/logout";
+            public static string GroupUrl(int id) => $"{GroupsUrl()}/{id}";
         }
     }
 }

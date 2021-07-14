@@ -14,7 +14,11 @@ namespace ECollectionApp.WebUI
             request.Headers.Add(scheme, token);
         }
 
-        public static Task AddJwtTokenAsync(this HttpRequestMessage request, HttpContext context) 
+        public static Task AddJwtTokenAsync(this HttpRequestMessage request, HttpContext context)
             => AddTokenAsync(request, context, JwtBearerDefaults.AuthenticationScheme);
+
+        public static Task<string> GetAccessTokenAsync(this HttpContext context) => context.GetTokenAsync("access_token");
+
+        public static Task<string> GetIdTokenAsync(this HttpContext context) => context.GetTokenAsync("id_token");
     }
 }
