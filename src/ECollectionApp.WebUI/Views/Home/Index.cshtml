@@ -1,4 +1,4 @@
-﻿@using ECollectionApp.WebUI.Models
+﻿@using ECollectionApp.WebUI.Data
 @model IEnumerable<CollectionGroup>
 @{
     ViewData["Title"] = "Home Page";
@@ -18,11 +18,20 @@
                             <h5 class="card-title">@group.Name</h5>
                             @*<p class="card-text">@string.Join(' ', group.Tags)</p>*@
                             <p class="card-text">Description or just tags</p>
-                            <a href="#" class="btn btn-primary" asp-controller="Home" asp-action="EditCollectionGroup" asp-route-id="@group.Id">See</a>
+                            <a class="btn btn-primary" asp-controller="CollectionGroup" asp-action="Edit" asp-route-id="@group.Id">See</a>
+                            <a class="btn btn-danger" asp-controller="CollectionGroup" asp-action="Delete" asp-route-id="@group.Id">Delete</a>
                         </div>
                     </div>
                 </div>
             }
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Create new group</h5>
+                        <a class="btn btn-primary" asp-controller="CollectionGroup" asp-action="Create">Create</a>
+                    </div>
+                </div>
+            </div>
         </div>
     }
     else

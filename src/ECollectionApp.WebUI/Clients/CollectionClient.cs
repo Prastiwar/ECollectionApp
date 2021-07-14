@@ -1,16 +1,22 @@
 ﻿using ECollectionApp.WebUI.Data;
+using ECollectionApp.WebUI.Serialization;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ECollectionApp.WebUI.Clients
 {
     public class CollectionClient : ICollectionClient
     {
-        public CollectionClient(HttpClient client) => Client = client;
+        public CollectionClient(HttpClient client, IHttpContentDeserializationHandler deserializer)
+        {
+            Client = client;
+            Deserializer = deserializer;
+        }
 
         protected HttpClient Client { get; }
+
+        protected IHttpContentDeserializationHandler Deserializer { get; }
 
         protected string Token { get; set; }
 
@@ -21,11 +27,7 @@ namespace ECollectionApp.WebUI.Clients
             request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(scheme, Token);
             HttpResponseMessage response = await Client.SendAsync(request);
             response.EnsureSuccessStatusCode();
-            using (System.IO.Stream responseStream = await response.Content.ReadAsStreamAsync())
-            {
-                // TODO: Use interface for serializator
-                return await JsonSerializer.DeserializeAsync<IEnumerable<CollectionGroup>>(responseStream);
-            }
+            return await Deserializer.DeserializeAsync<IEnumerable<CollectionGroup>>(response.Content);
         }
 
         public ICollectionClient WithToken(string token)

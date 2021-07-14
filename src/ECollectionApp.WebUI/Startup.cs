@@ -75,6 +75,8 @@ namespace ECollectionApp
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme);
             });
 
+            services.AddHttpContentDeserializationHandler();
+
             services.AddControllersWithViews();
         }
 

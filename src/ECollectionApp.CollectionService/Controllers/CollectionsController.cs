@@ -18,6 +18,7 @@ namespace ECollectionApp.CollectionService.Controllers
         public CollectionsController(CollectionDbContext context, ILogger<CollectionsController> logger)
         {
             Context = context;
+            context.Database.EnsureCreated();
             Logger = logger;
         }
 
