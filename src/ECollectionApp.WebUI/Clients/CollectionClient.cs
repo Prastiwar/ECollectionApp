@@ -6,34 +6,35 @@ using System.Threading.Tasks;
 
 namespace ECollectionApp.WebUI.Clients
 {
-    public class CollectionClient : ICollectionClient
+    public class CollectionClient : TokenizedEntityClient<ICollectionClient>, ICollectionClient
     {
         public CollectionClient(HttpClient client, IHttpContentDeserializationHandler deserializer)
-        {
-            Client = client;
-            Deserializer = deserializer;
-        }
+            : base(client, deserializer) { }
 
-        protected HttpClient Client { get; }
+        protected override ICollectionClient ReturnClient() => this;
 
-        protected IHttpContentDeserializationHandler Deserializer { get; }
+        public Task<IEnumerable<CollectionGroup>> GetGroupsAsync(int accountId = 0)
+            => GetEntitiesAsync<CollectionGroup>(Api.Collection.GroupsUrl(accountId));
 
-        protected string Token { get; set; }
+        public Task<CollectionGroup> GetGroupAsync(int id)
+            => GetEntityAsync<CollectionGroup>(Api.Collection.GroupUrl(id));
 
-        public async Task<IEnumerable<CollectionGroup>> GetGroupsAsync()
-        {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, Api.Collection.GroupsUrl());
-            string scheme = Client.DefaultRequestHeaders.Authorization.Scheme;
-            request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(scheme, Token);
-            HttpResponseMessage response = await Client.SendAsync(request);
-            response.EnsureSuccessStatusCode();
-            return await Deserializer.DeserializeAsync<IEnumerable<CollectionGroup>>(response.Content);
-        }
+        public Task CreateGroupAsync(CollectionGroup group) => CreateEntityAsync(group, Api.Collection.GroupsUrl());
 
-        public ICollectionClient WithToken(string token)
-        {
-            Token = token;
-            return this;
-        }
+        public Task DeleteGroupAsync(int id) => DeleteEntityAsync(Api.Collection.GroupUrl(id));
+
+        public Task UpdateGroupAsync(CollectionGroup group) => UpdateEntityAsync(group, Api.Collection.GroupUrl(group.Id));
+
+        public Task<IEnumerable<Collection>> GetCollectionsAsync(int groupId = 0)
+            => GetEntitiesAsync<Collection>(Api.Collection.CollectionsUrl(groupId));
+
+        public Task<Collection> GetCollectionAsync(int id)
+            => GetEntityAsync<Collection>(Api.Collection.CollectionUrl(id));
+
+        public Task CreateCollectionAsync(Collection collection) => CreateEntityAsync(collection, Api.Collection.CollectionsUrl());
+
+        public Task DeleteCollectionAsync(int id) => DeleteEntityAsync(Api.Collection.CollectionUrl(id));
+
+        public Task UpdateCollectionAsync(Collection collection) => UpdateEntityAsync(collection, Api.Collection.CollectionUrl(collection.Id));
     }
 }

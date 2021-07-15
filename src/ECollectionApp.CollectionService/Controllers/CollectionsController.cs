@@ -73,7 +73,7 @@ namespace ECollectionApp.CollectionService.Controllers
         [HttpPost]
         public async Task<ActionResult<Collection>> PostCollection(Collection collection)
         {
-            Context.Collections.Add(collection);
+            await Context.Collections.AddAsync(collection);
             await Context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetCollection), new { id = collection.Id }, collection);
         }

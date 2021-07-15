@@ -1,0 +1,33 @@
+﻿@using ECollectionApp.WebUI.ViewModels
+@using ECollectionApp.WebUI.Data
+@model CollectionGroupViewModel
+@{
+    ViewData["Title"] = Model.Group.Name;
+}
+
+<div class="text-center">
+    <p>Hey, there you have your resources for group @Model.Group.Name.</p>
+    <div class="row">
+        @foreach (Collection collection in Model.Collections)
+        {
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@collection.Name</h5>
+                    <p class="card-text">@collection.Value</p>
+                    <a class="btn btn-primary" asp-controller="Collection" asp-action="Edit" asp-route-id="@collection.Id">Edit</a>
+                    <a class="btn btn-danger" asp-controller="Collection" asp-action="Delete" asp-route-id="@collection.Id">Delete</a>
+                </div>
+            </div>
+        </div>
+        }
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Create new value</h5>
+                    <a class="btn btn-primary" asp-controller="Collection" asp-action="Create">Create</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

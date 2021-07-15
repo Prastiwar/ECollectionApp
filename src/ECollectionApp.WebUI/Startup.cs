@@ -1,8 +1,7 @@
-using ECollectionApp.WebUI.Clients;
+﻿using ECollectionApp.WebUI.Clients;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -67,7 +66,7 @@ namespace ECollectionApp
                     }
                 };
             });
-            
+
             services.AddAuthorization();
 
             services.AddHttpClient<ICollectionClient, CollectionClient>((provider, client) => {
