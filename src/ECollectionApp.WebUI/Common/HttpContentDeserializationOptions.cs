@@ -6,13 +6,13 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public class HttpContentDeserializationOptions
     {
-        public HttpContentDeserializationOptions() => Deserializers = new List<IHttpContentDeserializer>();
+        public HttpContentDeserializationOptions() => Deserializers = new List<IHttpContentSerializer>();
 
-        public IList<IHttpContentDeserializer> Deserializers { get; }
+        public IList<IHttpContentSerializer> Deserializers { get; }
 
-        public Func<IServiceProvider, IHttpContentDeserializationHandler> Handler { get; set; }
+        public Func<IServiceProvider, IHttpContentSerializationHandler> Handler { get; set; }
 
-        public HttpContentDeserializationOptions SetHandler(IHttpContentDeserializationHandler handler)
+        public HttpContentDeserializationOptions SetHandler(IHttpContentSerializationHandler handler)
         {
             Handler = (provider) => handler;
             return this;

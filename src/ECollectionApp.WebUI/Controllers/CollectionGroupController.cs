@@ -24,25 +24,29 @@ namespace ECollectionApp.WebUI.Controllers
 
         protected ILogger<CollectionGroupController> Logger { get; }
 
+        /// <summary> Return CollectionClient with access token </summary>
+        protected async Task<ICollectionClient> GetCollectionClientAsync() => CollectionClient.WithToken(await HttpContext.GetAccessTokenAsync());
+
         // GET: CollectionGroupController
         public async Task<IActionResult> Index()
         {
-            string token = await HttpContext.GetAccessTokenAsync();
-            IEnumerable<CollectionGroup> groups = await CollectionClient.WithToken(token).GetGroupsAsync();
+            ICollectionClient client = await GetCollectionClientAsync();
+            IEnumerable<CollectionGroup> groups = await client.GetGroupsAsync(User.GetAccountId());
             return View(groups);
         }
 
         // GET: CollectionGroupController/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            CollectionGroup group = await CollectionClient.GetGroupAsync(id);
+            ICollectionClient client = await GetCollectionClientAsync();
+            CollectionGroup group = await client.GetGroupAsync(id);
             if (group == null)
             {
                 return NotFound();
             }
             CollectionGroupViewModel viewModel = new CollectionGroupViewModel() {
                 Group = group,
-                Collections = await CollectionClient.GetCollectionsAsync(group.Id)
+                Collections = await client.GetCollectionsAsync(group.Id)
             };
             return View(viewModel);
         }
@@ -51,7 +55,7 @@ namespace ECollectionApp.WebUI.Controllers
         public IActionResult Create()
         {
             CollectionGroup group = new CollectionGroup() {
-                AccountId = int.Parse(User.FindFirst("").Value),
+                AccountId = User.GetAccountId(),
                 Name = "New group"
             };
             return View(group);
@@ -62,21 +66,24 @@ namespace ECollectionApp.WebUI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CollectionGroup group)
         {
+            ICollectionClient client = await GetCollectionClientAsync();
             try
             {
-                await CollectionClient.CreateGroupAsync(group);
+                await client.CreateGroupAsync(group);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                Logger.LogError(ex, "Couldn't create group with id " + group.Id);
+                return View(group);
             }
         }
 
         // GET: CollectionGroupController/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            CollectionGroup group = await CollectionClient.GetGroupAsync(id);
+            ICollectionClient client = await GetCollectionClientAsync();
+            CollectionGroup group = await client.GetGroupAsync(id);
             if (group == null)
             {
                 return NotFound();
@@ -93,29 +100,34 @@ namespace ECollectionApp.WebUI.Controllers
             {
                 return BadRequest();
             }
+            ICollectionClient client = await GetCollectionClientAsync();
             try
             {
-                await CollectionClient.UpdateGroupAsync(group);
+                await client.UpdateGroupAsync(group);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
-                return View();
+                Logger.LogError(ex, "Couldn't update group with id " + id);
+                return View(group);
             }
         }
 
         // GET: CollectionGroupController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
+            ICollectionClient client = await GetCollectionClientAsync();
             try
             {
-                await CollectionClient.DeleteGroupAsync(id);
+                await client.DeleteGroupAsync(id);
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex, "Couldn't remove group with id " + id);
             }
-            return View();
+            return RedirectToAction(nameof(Index));
         }
     }
 }

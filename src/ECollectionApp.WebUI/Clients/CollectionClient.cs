@@ -8,7 +8,7 @@ namespace ECollectionApp.WebUI.Clients
 {
     public class CollectionClient : TokenizedEntityClient<ICollectionClient>, ICollectionClient
     {
-        public CollectionClient(HttpClient client, IHttpContentDeserializationHandler deserializer)
+        public CollectionClient(HttpClient client, IHttpContentSerializationHandler deserializer)
             : base(client, deserializer) { }
 
         protected override ICollectionClient ReturnClient() => this;

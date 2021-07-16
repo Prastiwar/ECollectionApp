@@ -1,9 +1,7 @@
-﻿@using ECollectionApp.WebUI.Data
-@model IEnumerable<CollectionGroup>
+﻿@model IEnumerable<CollectionGroup>
 @{
     ViewData["Title"] = "Your collection groups";
 }
-
 <div class="text-center">
     <h1 class="display-4">Welcome @User.Identity.Name</h1>
     <p>Check your collection groups and edit them if you like</p>
@@ -16,9 +14,12 @@
                         <h5 class="card-title">@group.Name</h5>
                         @*<p class="card-text">@string.Join(' ', group.Tags)</p>*@
                         <p class="card-text">Description or just tags</p>
-                        <a class="btn btn-info" asp-controller="CollectionGroup" asp-action="Details" asp-route-id="@group.Id">See</a>
-                        <a class="btn btn-primary" asp-controller="CollectionGroup" asp-action="Edit" asp-route-id="@group.Id">Edit</a>
-                        <a class="btn btn-danger" asp-controller="CollectionGroup" asp-action="Delete" asp-route-id="@group.Id">Delete</a>
+                        <a class="btn btn-info" asp-controller="CollectionGroup" asp-action="Details" asp-route-id="@group.Id">Details</a>
+                        <a class="btn btn-primary" onclick="showInPopup('@Url.Action("Edit", "CollectionGroup", new { id = group.Id }, Context.Request.Scheme)', 'Update Collection Group')">Edit</a>
+                        <form asp-controller="CollectionGroup" asp-action="Delete" asp-route-id="@group.Id" onsubmit="return jQueryAjaxDelete(this)" class="d-inline">
+                            <input type="hidden" asp-for="@group.Id" />
+                            <input class="btn btn-danger" type="submit" value="Delete" />
+                        </form>
                     </div>
                 </div>
             </div>
@@ -27,9 +28,10 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Create new group</h5>
-                    <a class="btn btn-primary" asp-controller="CollectionGroup" asp-action="Create">Create</a>
+                    <a onclick="showInPopup('@Url.Action("Create", "CollectionGroup", null, Context.Request.Scheme)', 'New Collection Group')" class="btn btn-primary text-white">Create new</a>
                 </div>
             </div>
         </div>
+
     </div>
 </div>

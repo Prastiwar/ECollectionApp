@@ -1,0 +1,11 @@
+﻿@model CollectionGroup
+
+@{ Layout = null; }
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" asp-route-id="@Model.Id" onsubmit="return jQueryAjaxPost(this)">
+            @await Html.PartialAsync("_EditPartial", Model)
+        </form>
+    </div>
+</div>
