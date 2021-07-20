@@ -2,8 +2,10 @@
 using ECollectionApp.TagService.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ECollectionApp.CollectionService.Controllers
@@ -21,7 +23,13 @@ namespace ECollectionApp.CollectionService.Controllers
 
         // GET: api/tags
         [HttpGet]
-        public Task<ActionResult<IEnumerable<Tag>>> GetTag() => GetEntities();
+        public Task<ActionResult<IEnumerable<Tag>>> GetTag(string search = null) => GetEntities(query => {
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(t => EF.Functions.Like(t.Name, search));
+            }
+            return query;
+        });
 
         // GET: api/tags/5
         [HttpGet("{id}")]

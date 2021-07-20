@@ -23,7 +23,7 @@ namespace ECollectionApp.CollectionService.Controllers
 
         // GET: api/collection-groups/5/tags
         [HttpGet("{id}/tags")]
-        public async Task<ActionResult<IEnumerable<Tag>>> GetTag(int id)
+        public async Task<ActionResult<IEnumerable<Tag>>> GetTag(int id, string search = null)
         {
             if (id <= 0)
             {
@@ -36,6 +36,10 @@ namespace ECollectionApp.CollectionService.Controllers
                                    join groupTag in query
                                      on tag.Id equals groupTag.TagId
                                    select tag;
+            if (!string.IsNullOrEmpty(search))
+            {
+                tags = tags.Where(t => EF.Functions.Like(t.Name, search));
+            }
             return await tags.ToArrayAsync();
         }
 
