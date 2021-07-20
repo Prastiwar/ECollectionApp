@@ -1,7 +1,9 @@
 ﻿using ECollectionApp.AspNetCore.Microservice;
+using ECollectionApp.AspNetCore.Patch.Converters;
 using ECollectionApp.CollectionService.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +25,14 @@ namespace ECollectionApp.CollectionService
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ECollectionApp.CollectionService", Version = "v1" });
             });
 
+            services.AddChangePatcher();
+
             services.AddDbContext<CollectionDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CollectionDb")));
+
+            services.Configure<JsonOptions>(options => {
+                options.JsonSerializerOptions.Converters.Add(new PatchJsonTextConverter());
+                options.JsonSerializerOptions.Converters.Add(new ObjectJsonTextConverter());
+            });
         }
 
         public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)

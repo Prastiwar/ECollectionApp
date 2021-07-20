@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ECollectionApp.AspNetCore.Extensions\ECollectionApp.AspNetCore.Microservice.csproj" />
+    <ProjectReference Include="..\ECollectionApp.AspNetCore.Patch\ECollectionApp.AspNetCore.Patch.csproj" />
   </ItemGroup>
 
 </Project>

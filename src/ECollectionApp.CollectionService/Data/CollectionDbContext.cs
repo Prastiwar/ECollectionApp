@@ -12,7 +12,6 @@ namespace ECollectionApp.CollectionService.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Collection>();
-            Database.EnsureCreated();
         }
     }
 }
