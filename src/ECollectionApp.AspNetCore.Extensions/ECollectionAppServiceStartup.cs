@@ -36,6 +36,7 @@ namespace ECollectionApp.AspNetCore.Microservice
             services.AddAuthorization(options => {
                 AuthorizationPolicy policy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
                                                       .AddRequirements(new HasScopeRequirement(ServiceScope, authority))
+                                                      .RequireClaim(ECollectionAppClaims.Account_Id)
                                                       .Build();
                 options.DefaultPolicy = policy;
             });

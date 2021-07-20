@@ -60,7 +60,7 @@ namespace ECollectionApp.AspNetCore.Microservice
         protected async Task<IActionResult> PutEntity(int id, TEntity value)
         {
             int entityId = GetEntityId(value);
-            if (value == null || entityId > 0)
+            if (value == null || (entityId > 0 && entityId != id))
             {
                 return BadRequest();
             }
