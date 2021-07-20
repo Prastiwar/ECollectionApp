@@ -1,3 +1,4 @@
+using ECollectionApp.GatewayApi.Aggregation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using Ocelot.Multiplexer;
 
 namespace ECollectionApp.GatewayApi
 {
@@ -31,6 +33,11 @@ namespace ECollectionApp.GatewayApi
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ECollectionApp.GatewayApi", Version = "v1" });
             });
+
+            services.AddTransient<IDefinedAggregator, CollectionGroupAggregator>();
+            services.AddTransient<IDefinedAggregator, CollectionGroupsAggregator>();
+            services.AddTransient<IDefinedAggregator, AccountCollectionGroupsAggregator>();
+
             services.AddOcelot();
         }
 

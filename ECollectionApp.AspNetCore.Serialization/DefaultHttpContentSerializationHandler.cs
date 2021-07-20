@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace ECollectionApp.WebUI.Serialization
+namespace ECollectionApp.AspNetCore.Serialization
 {
     public class DefaultHttpContentSerializationHandler : IHttpContentSerializationHandler
     {

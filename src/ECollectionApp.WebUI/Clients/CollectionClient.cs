@@ -1,5 +1,5 @@
-﻿using ECollectionApp.WebUI.Data;
-using ECollectionApp.WebUI.Serialization;
+﻿using ECollectionApp.AspNetCore.Serialization;
+using ECollectionApp.WebUI.Data;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -8,22 +8,54 @@ namespace ECollectionApp.WebUI.Clients
 {
     public class CollectionClient : TokenizedEntityClient<ICollectionClient>, ICollectionClient
     {
-        public CollectionClient(HttpClient client, IHttpContentSerializationHandler deserializer)
-            : base(client, deserializer) { }
+        public CollectionClient(HttpClient client, IHttpContentSerializationHandler serializer)
+            : base(client, serializer) { }
 
         protected override ICollectionClient ReturnClient() => this;
 
-        public Task<IEnumerable<CollectionGroup>> GetGroupsAsync(int accountId = 0)
-            => GetEntitiesAsync<CollectionGroup>(Api.Collection.GroupsUrl(accountId));
+        public async Task<IEnumerable<CollectionGroup>> GetGroupsAsync(int accountId = 0, bool includeTags = false)
+        {
+            string url = null;
+            if (accountId > 0)
+            {
+                if (includeTags)
+                {
+                    url = Api.CollectionGroup.GroupsWithTagsUrl(accountId);
+                }
+                else
+                {
+                    url = Api.CollectionGroup.GroupsUrl(accountId);
+                }
+            }
+            else
+            {
+                if (includeTags)
+                {
+                    url = Api.CollectionGroup.GroupsWithTagsUrl();
+                }
+                else
+                {
+                    url = Api.CollectionGroup.GroupsUrl();
+                }
+            }
+            IEnumerable<CollectionGroup> collectionGroups = await GetEntitiesAsync<CollectionGroup>(url);
+            return collectionGroups;
+        }
 
-        public Task<CollectionGroup> GetGroupAsync(int id)
-            => GetEntityAsync<CollectionGroup>(Api.Collection.GroupUrl(id));
+        public Task<CollectionGroup> GetGroupAsync(int id, bool includeTags = false)
+        {
+            if (includeTags)
+            {
+                return GetEntityAsync<CollectionGroup>(Api.CollectionGroup.GroupWithTagUrl(id));
+            }
+            return GetEntityAsync<CollectionGroup>(Api.CollectionGroup.GroupUrl(id));
+        }
 
-        public Task CreateGroupAsync(CollectionGroup group) => CreateEntityAsync(group, Api.Collection.GroupsUrl());
+        public Task CreateGroupAsync(CollectionGroup group) => CreateEntityAsync(group, Api.CollectionGroup.GroupsUrl());
 
-        public Task DeleteGroupAsync(int id) => DeleteEntityAsync(Api.Collection.GroupUrl(id));
+        public Task DeleteGroupAsync(int id) => DeleteEntityAsync(Api.CollectionGroup.GroupUrl(id));
 
-        public Task UpdateGroupAsync(CollectionGroup group) => UpdateEntityAsync(group, Api.Collection.GroupUrl(group.Id));
+        public Task UpdateGroupAsync(CollectionGroup group) => UpdateEntityAsync(group, Api.CollectionGroup.GroupUrl(group.Id));
 
         public Task<IEnumerable<Collection>> GetCollectionsAsync(int groupId = 0)
             => GetEntitiesAsync<Collection>(Api.Collection.CollectionsUrl(groupId));

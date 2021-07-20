@@ -31,7 +31,7 @@ namespace ECollectionApp.WebUI.Controllers
         public async Task<IActionResult> Index()
         {
             ICollectionClient client = await GetCollectionClientAsync();
-            IEnumerable<CollectionGroup> groups = await client.GetGroupsAsync(User.GetAccountId());
+            IEnumerable<CollectionGroup> groups = await client.GetGroupsAsync(User.GetAccountId(), true);
             return View(groups);
         }
 
@@ -39,7 +39,7 @@ namespace ECollectionApp.WebUI.Controllers
         public async Task<IActionResult> Details(int id)
         {
             ICollectionClient client = await GetCollectionClientAsync();
-            CollectionGroup group = await client.GetGroupAsync(id);
+            CollectionGroup group = await client.GetGroupAsync(id, true);
             if (group == null)
             {
                 return NotFound();
@@ -56,7 +56,8 @@ namespace ECollectionApp.WebUI.Controllers
         {
             CollectionGroup group = new CollectionGroup() {
                 AccountId = User.GetAccountId(),
-                Name = "New group"
+                Name = "New group",
+                Tags = new List<CollectionGroupTag>()
             };
             return View(group);
         }

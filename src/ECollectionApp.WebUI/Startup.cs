@@ -37,7 +37,9 @@ namespace ECollectionApp
                 options.Scope.Clear();
                 options.Scope.Add("openid");
                 options.Scope.Add("profile");
+                options.Scope.Add("email");
                 options.Scope.Add("collections");
+                options.Scope.Add("tags");
 
                 options.CallbackPath = new PathString("/callback");
                 options.ClaimsIssuer = "Auth0";
@@ -76,7 +78,10 @@ namespace ECollectionApp
 
             services.AddHttpContentDeserializationHandler();
 
-            services.AddControllersWithViews();
+            IMvcBuilder mvcBuilder = services.AddControllersWithViews();
+#if DEBUG
+            mvcBuilder.AddRazorRuntimeCompilation();
+#endif
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -98,6 +103,7 @@ namespace ECollectionApp
 
             app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute(

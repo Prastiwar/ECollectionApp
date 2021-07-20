@@ -10,7 +10,8 @@
                 }
             ],
             "UpstreamPathTemplate": "/api/collection",
-            "UpstreamHttpMethod": [ "POST", "PUT", "GET" ]
+            "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
+            "Key": "Collections"
         },
         {
             "DownstreamPathTemplate": "/api/collection/{id}",
@@ -22,7 +23,8 @@
                 }
             ],
             "UpstreamPathTemplate": "/api/collection/{id}",
-            "UpstreamHttpMethod": [ "GET", "DELETE" ]
+            "UpstreamHttpMethod": [ "GET", "DELETE" ],
+            "Key": "Collection"
         },
 
 
@@ -32,11 +34,12 @@
             "DownstreamHostAndPorts": [
                 {
                     "Host": "localhost",
-                    "Port": 53129
+                    "Port": 1934
                 }
             ],
             "UpstreamPathTemplate": "/api/collection-groups",
-            "UpstreamHttpMethod": [ "POST", "PUT", "GET" ]
+            "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
+            "Key": "CollectionGroups"
         },
         {
             "DownstreamPathTemplate": "/api/collection-groups/{id}",
@@ -44,11 +47,91 @@
             "DownstreamHostAndPorts": [
                 {
                     "Host": "localhost",
-                    "Port": 53129
+                    "Port": 1934
                 }
             ],
             "UpstreamPathTemplate": "/api/collection-groups/{id}",
-            "UpstreamHttpMethod": [ "GET", "DELETE" ]
+            "UpstreamHttpMethod": [ "GET", "DELETE" ],
+            "Key": "CollectionGroup"
+        },
+        {
+            "DownstreamPathTemplate": "/api/collection-groups?accountId={accountId}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 1934
+                }
+            ],
+            "UpstreamPathTemplate": "/api/collection-groups?accountId={accountId}",
+            "UpstreamHttpMethod": [ "GET" ],
+            "Key": "AccountCollectionGroups"
+        },
+
+
+        {
+            "DownstreamPathTemplate": "/api/tags/collection-groups",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 15796
+                }
+            ],
+            "UpstreamPathTemplate": "/api/tags/collection-groups",
+            "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
+            "Key": "CollectionGroupsTags"
+        },
+        {
+            "DownstreamPathTemplate": "/api/tags/collection-groups/{id}",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 15796
+                }
+            ],
+            "UpstreamPathTemplate": "/api/tags/collection-groups/{id}",
+            "UpstreamHttpMethod": [ "GET", "DELETE" ],
+            "Key": "CollectionGroupTags"
+        }
+    ],
+    "Aggregates": [
+        {
+            "RouteKeys": [
+                "CollectionGroup",
+                "CollectionGroupTags"
+            ],
+            "UpstreamPathTemplate": "/api/collection-groups/{id}?include=tags",
+            "Priority": 2,
+            "Aggregator": "CollectionGroupAggregator"
+        },
+        {
+            "RouteKeys": [
+                "CollectionGroups",
+                "CollectionGroupsTags"
+            ],
+            "UpstreamPathTemplate": "/api/collection-groups?include=tags",
+            "Priority": 2,
+            "Aggregator": "CollectionGroupsAggregator"
+        },
+        {
+            "RouteKeys": [
+                "AccountCollectionGroups",
+                "CollectionGroupsTags"
+            ],
+            "UpstreamPathTemplate": "/api/collection-groups?accountId={accountId}&include=tags",
+            "Priority": 3,
+            "Aggregator": "AccountCollectionGroupsAggregator"
+        },
+        {
+            "RouteKeys": [
+                "AccountCollectionGroups",
+                "CollectionGroupsTags"
+            ],
+            "UpstreamPathTemplate": "/api/collection-groups?include=tags&accountId={accountId}",
+            "Priority": 3,
+            "Aggregator": "AccountCollectionGroupsAggregator"
         }
     ]
 }

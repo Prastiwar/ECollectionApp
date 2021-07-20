@@ -1,5 +1,5 @@
-﻿using ECollectionApp.AspNetCore.Microservice;
-using ECollectionApp.CollectionService.Data;
+using ECollectionApp.AspNetCore.Microservice;
+using ECollectionApp.CollectionGroupService.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
-namespace ECollectionApp.CollectionService
+namespace ECollectionApp.CollectionGroupService
 {
     public class Startup : ECollectionAppServiceStartup
     {
@@ -20,10 +20,10 @@ namespace ECollectionApp.CollectionService
         {
             base.ConfigureServices(services);
             services.AddSwaggerGen(c => {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ECollectionApp.CollectionService", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ECollectionApp.CollectionGroupService", Version = "v1" });
             });
 
-            services.AddDbContext<CollectionDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CollectionDb")));
+            services.AddDbContext<CollectionGroupDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CollectionGroupDb")));
         }
 
         public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -32,7 +32,7 @@ namespace ECollectionApp.CollectionService
             if (env.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECollectionApp.CollectionService v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ECollectionApp.CollectionGroupService v1"));
             }
         }
     }

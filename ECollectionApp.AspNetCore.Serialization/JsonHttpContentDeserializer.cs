@@ -5,13 +5,14 @@ using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace ECollectionApp.WebUI.Serialization
+namespace ECollectionApp.AspNetCore.Serialization
 {
     public class JsonHttpContentDeserializer : IHttpContentSerializer
     {
         public bool CanDeserialize(HttpContent content) => CanSerialize(content.Headers.ContentType);
 
-        public bool CanSerialize(MediaTypeHeaderValue mediaType) => string.Compare(mediaType.MediaType, "application/json") == 0;
+        public bool CanSerialize(MediaTypeHeaderValue mediaType) => string.Compare(mediaType.MediaType, "application/json") == 0 ||
+                                                                    string.Compare(mediaType.MediaType, "text/plain") == 0;
 
         public async Task<T> DeserializeAsync<T>(HttpContent content)
         {

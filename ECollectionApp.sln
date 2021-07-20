@@ -9,6 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECollectionApp.CollectionSe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECollectionApp.GatewayApi", "src\ECollectionApp.GateawayApi\ECollectionApp.GatewayApi.csproj", "{9E2274BA-BED2-4CB1-BA04-869B2F1D6C49}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECollectionApp.TagService", "src\ECollectionApp.TagService\ECollectionApp.TagService.csproj", "{7FC7B31F-8329-4430-B266-5CF498295457}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECollectionApp.AspNetCore.Microservice", "src\ECollectionApp.AspNetCore.Extensions\ECollectionApp.AspNetCore.Microservice.csproj", "{971993A4-5749-4868-B9A1-0D5E55BDEE6C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECollectionApp.CollectionGroupService", "src\ECollectionApp.CollectionGroupService\ECollectionApp.CollectionGroupService.csproj", "{6316DD53-E9F2-4EDC-A842-8F7781389C90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECollectionApp.AspNetCore.Serialization", "ECollectionApp.AspNetCore.Serialization\ECollectionApp.AspNetCore.Serialization.csproj", "{F46222CB-7B63-4130-8D47-9F2F992950BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +35,22 @@ Global
 		{9E2274BA-BED2-4CB1-BA04-869B2F1D6C49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E2274BA-BED2-4CB1-BA04-869B2F1D6C49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E2274BA-BED2-4CB1-BA04-869B2F1D6C49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FC7B31F-8329-4430-B266-5CF498295457}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FC7B31F-8329-4430-B266-5CF498295457}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FC7B31F-8329-4430-B266-5CF498295457}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FC7B31F-8329-4430-B266-5CF498295457}.Release|Any CPU.Build.0 = Release|Any CPU
+		{971993A4-5749-4868-B9A1-0D5E55BDEE6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{971993A4-5749-4868-B9A1-0D5E55BDEE6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{971993A4-5749-4868-B9A1-0D5E55BDEE6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{971993A4-5749-4868-B9A1-0D5E55BDEE6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6316DD53-E9F2-4EDC-A842-8F7781389C90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6316DD53-E9F2-4EDC-A842-8F7781389C90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6316DD53-E9F2-4EDC-A842-8F7781389C90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6316DD53-E9F2-4EDC-A842-8F7781389C90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F46222CB-7B63-4130-8D47-9F2F992950BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F46222CB-7B63-4130-8D47-9F2F992950BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F46222CB-7B63-4130-8D47-9F2F992950BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F46222CB-7B63-4130-8D47-9F2F992950BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

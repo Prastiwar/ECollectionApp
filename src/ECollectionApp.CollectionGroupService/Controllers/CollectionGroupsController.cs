@@ -1,5 +1,4 @@
-﻿using ECollectionApp.CollectionService.Data;
-using ECollectionApp.CollectionService.Models;
+﻿using ECollectionApp.CollectionGroupService.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ECollectionApp.CollectionService.Controllers
+namespace ECollectionApp.CollectionGroupService.Controllers
 {
     [Route("api/collection-groups")]
     [ApiController]

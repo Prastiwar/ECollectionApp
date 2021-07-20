@@ -1,7 +1,6 @@
-﻿using ECollectionApp.CollectionService.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace ECollectionApp.CollectionService.Data
+namespace ECollectionApp.CollectionGroupService.Data
 {
     public class CollectionGroupDbContext : DbContext
     {

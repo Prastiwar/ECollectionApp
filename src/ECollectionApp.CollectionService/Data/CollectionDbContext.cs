@@ -1,5 +1,4 @@
-﻿using ECollectionApp.CollectionService.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace ECollectionApp.CollectionService.Data
 {

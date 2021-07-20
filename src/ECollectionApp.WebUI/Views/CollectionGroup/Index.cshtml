@@ -6,28 +6,48 @@
     <h1 class="display-4">Welcome @User.Identity.Name</h1>
     <p>Check your collection groups and edit them if you like</p>
 
-    <div class="card-deck">
-        <div class="card text-white bg-warning mb-3">
-            <div class="card-header">Create new group</div>
-            <div class="card-footer">
-                <a onclick="showInPopup('@Url.Action("Create", "CollectionGroup", null, Context.Request.Scheme)', 'New Collection Group')" class="btn btn-primary text-white">Create new</a>
+    <div class="row row-cols-auto row-cols-md-2">
+        <div class="col-auto mb-4">
+            <div class="card text-white bg-warning h-100">
+                <div class="card-header">Create new group</div>
+                <div class="card-body">
+                    <p class="card-text"></p>
+                </div>
+                <div class="card-footer">
+                    <a onclick="showInPopup('@Url.Action("Create", "CollectionGroup", null, Context.Request.Scheme)', 'New Collection Group')" class="btn btn-primary text-white">Create new</a>
+                </div>
             </div>
         </div>
         @foreach (CollectionGroup group in Model)
         {
-            <div class="card text-white bg-primary mb-3">
-                <div class="card-header">@group.Name</div>
-                <div class="card-body">
-                    @*<p class="card-text">@string.Join(' ', group.Tags)</p>*@
-                    <p class="card-text">Description or just tags</p>
-                </div>
-                <div class="card-footer">
-                    <a class="btn btn-info" asp-controller="CollectionGroup" asp-action="Details" asp-route-id="@group.Id"><i class="fas fa-eye"></i></a>
-                    <a class="btn btn-primary" onclick="showInPopup('@Url.Action("Edit", "CollectionGroup", new { id = group.Id }, Context.Request.Scheme)', 'Update Collection Group')"><i class="fas fa-pencil-alt"></i></a>
-                    <form asp-controller="CollectionGroup" asp-action="Delete" asp-route-id="@group.Id" onsubmit="return jQueryAjaxDelete(this)" class="d-inline">
-                        <input type="hidden" asp-for="@group.Id" />
-                        <button class="btn btn-danger" type="submit"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                    </form>
+            <div class="col-auto mb-4">
+                <div class="card text-white bg-primary h-100">
+                    <div class="card-header">@group.Name</div>
+                    <div class="card-body">
+                        <p class="card-text text-wrap" style="max-width:12rem">
+                            @{
+                                if (group.Tags != null && group.Tags.Count > 0)
+                                {
+                                    System.Text.StringBuilder builder = new System.Text.StringBuilder();
+                                    foreach (var tag in group.Tags)
+                                    {
+                                        builder.Append('#');
+                                        builder.Append(tag.Name);
+                                        builder.Append(' ');
+                                    }
+                                    @builder.ToString();
+                                }
+                            }
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        <a class="btn btn-info" asp-controller="CollectionGroup" asp-action="Details" asp-route-id="@group.Id"><i class="fas fa-eye"></i></a>
+                        <a class="btn btn-primary" onclick="showInPopup('@Url.Action("Edit", "CollectionGroup", new { id = group.Id }, Context.Request.Scheme)', 'Update Collection Group')"><i class="fas fa-pencil-alt"></i></a>
+                        <form asp-controller="CollectionGroup" asp-action="Delete" asp-route-id="@group.Id" onsubmit="return jQueryAjaxDelete(this)" class="d-inline">
+                            <input type="hidden" asp-for="@group.Id" />
+                            <button class="btn btn-danger" type="submit"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                        </form>
+                    </div>
                 </div>
             </div>
         }

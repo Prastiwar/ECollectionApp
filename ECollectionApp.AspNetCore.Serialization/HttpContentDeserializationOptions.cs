@@ -1,4 +1,4 @@
-﻿using ECollectionApp.WebUI.Serialization;
+﻿using ECollectionApp.AspNetCore.Serialization;
 using System;
 using System.Collections.Generic;
 

@@ -30,7 +30,11 @@ namespace ECollectionApp.WebUI.Controllers
             {
                 return RedirectToAction(nameof(Index), nameof(CollectionGroupController).Replace("Controller", ""));
             }
+#if DEBUG
+            return RedirectToAction(nameof(Login));
+#else
             return View();
+#endif
         }
     }
 }

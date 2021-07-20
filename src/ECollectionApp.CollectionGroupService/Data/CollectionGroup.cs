@@ -1,4 +1,4 @@
-﻿namespace ECollectionApp.CollectionService.Models
+﻿namespace ECollectionApp.CollectionGroupService.Data
 {
     public class CollectionGroup
     {

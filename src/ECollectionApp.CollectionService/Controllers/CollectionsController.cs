@@ -1,5 +1,4 @@
 ﻿using ECollectionApp.CollectionService.Data;
-using ECollectionApp.CollectionService.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
