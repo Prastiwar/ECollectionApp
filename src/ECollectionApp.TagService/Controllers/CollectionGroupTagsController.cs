@@ -1,4 +1,5 @@
-﻿using ECollectionApp.TagService.Data;
+﻿using ECollectionApp.AspNetCore.Microservice;
+using ECollectionApp.TagService.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,79 +10,104 @@ using System.Threading.Tasks;
 
 namespace ECollectionApp.CollectionService.Controllers
 {
-    [Route("api/tags/collection-groups")]
+    [Route("api/collection-groups")]
     [ApiController]
     [Authorize]
-    public class CollectionGroupTagsController : ControllerBase
+    public class CollectionGroupTagsController : EntityController<Tag>
     {
-        public CollectionGroupTagsController(TagDbContext context, ILogger<CollectionGroupTagsController> logger)
+        public CollectionGroupTagsController(TagDbContext context, ILogger<CollectionGroupTagsController> logger) : base(context, logger) => context.Database.EnsureCreated();
+
+        protected override int GetEntityId(Tag entity) => entity.Id;
+
+        protected override void SetEntityId(Tag entity, int id) => entity.Id = id;
+
+        // GET: api/collection-groups/5/tags
+        [HttpGet("{id}/tags")]
+        public async Task<ActionResult<IEnumerable<Tag>>> GetTag(int id)
         {
-            Context = context;
-            context.Database.EnsureCreated();
-            Logger = logger;
-        }
-
-        protected TagDbContext Context { get; }
-
-        protected ILogger<CollectionGroupTagsController> Logger { get; }
-
-        // GET: api/tags/collection-groups
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<CollectionGroupTag>>> GetCollectionGroupTag() => await Context.CollectionGroupTags.ToListAsync();
-
-        // GET: api/tags/collection-groups/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<CollectionGroupTag>>> GetCollectionGroupTag(int id) => await Context.CollectionGroupTags.Where(t => t.GroupId == id).ToListAsync();
-
-        // PUT: api/tags/collection-groups/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCollectionGroupTag(int id, CollectionGroupTag tag)
-        {
-            if (id != tag.Id)
+            if (id <= 0)
             {
                 return BadRequest();
             }
-            Context.Entry(tag).State = EntityState.Modified;
-            try
+            IQueryable<CollectionGroupTag> query = from groupTag in Context.Set<CollectionGroupTag>()
+                                                   where groupTag.GroupId == id
+                                                   select groupTag;
+            IQueryable<Tag> tags = from tag in Context.Set<Tag>()
+                                   join groupTag in query
+                                     on tag.Id equals groupTag.TagId
+                                   select tag;
+            return await tags.ToArrayAsync();
+        }
+
+        // PUT: api/collection-groups/5/tags
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}/tags")]
+        public async Task<IActionResult> PutTag(int id, Tag[] tags)
+        {
+            // Check if ids are concise and update name's if needed
+            for (int i = 0; i < tags.Length; i++)
+            {
+                Tag tag = tags[i];
+                if (tag.Id != 0)
+                {
+                    Tag foundTag = await Context.Set<Tag>().FindAsync(tag.Id);
+                    if (foundTag == null)
+                    {
+                        return BadRequest();
+                    }
+                    bool hasDifferentNames = !string.IsNullOrEmpty(tag.Name) && !EqualityComparer<string>.Default.Equals(foundTag.Name, tag.Name);
+                    if (hasDifferentNames)
+                    {
+                        return BadRequest();
+                    }
+                    tags[i] = foundTag;
+                }
+            }
+
+            // Update ids or add new tag
+            bool needToSave = false;
+            for (int i = 0; i < tags.Length; i++)
+            {
+                Tag tag = tags[i];
+                if (tag.Id == 0)
+                {
+                    Tag foundTag = await Context.Set<Tag>().FirstOrDefaultAsync(t => t.Name == tag.Name);
+                    if (foundTag == null)
+                    {
+                        await Context.Set<Tag>().AddAsync(tag);
+                        needToSave = true;
+                        continue;
+                    }
+                    tags[i] = foundTag;
+                }
+            }
+            if (needToSave)
             {
                 await Context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException ex)
+            if (tags.Any(t => t.Id == 0))
             {
-                if (!CollectionGroupTagExists(id))
-                {
-                    return NotFound();
-                }
-                Logger.LogError(ex, $"Error occured while executing {nameof(PutCollectionGroupTag)}");
-                throw;
+                return InternalError();
+            }
+
+            IQueryable<CollectionGroupTag> query = from groupTag in Context.Set<CollectionGroupTag>()
+                                                   where groupTag.GroupId == id
+                                                   select groupTag;
+            CollectionGroupTag[] tagsToRemove = await query.ToArrayAsync();
+            CollectionGroupTag[] tagsToAdd = tags.Select(t => new CollectionGroupTag() { GroupId = id, TagId = t.Id }).ToArray();
+            CollectionGroupTag[] tagsToCompleteRemove = tagsToRemove.Except(tagsToAdd).ToArray();
+            CollectionGroupTag[] tagsNotRemoved = tagsToRemove.Except(tagsToCompleteRemove).ToArray();
+            if (tagsToCompleteRemove.Length > 0)
+            {
+                Context.Set<CollectionGroupTag>().RemoveRange(tagsToCompleteRemove);
+            }
+            CollectionGroupTag[] distinctTagsToAdd = tagsToAdd.Except(tagsNotRemoved).ToArray();
+            if (distinctTagsToAdd.Length > 0)
+            {
+                await Context.Set<CollectionGroupTag>().AddRangeAsync(distinctTagsToAdd);
+                await Context.SaveChangesAsync();
             }
             return NoContent();
         }
-
-        // POST: api/tags/collection-groups
-        [HttpPost]
-        public async Task<ActionResult<CollectionGroupTag>> PostCollectionGroupTag(CollectionGroupTag tag)
-        {
-            Context.CollectionGroupTags.Add(tag);
-            await Context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetCollectionGroupTag), new { id = tag.Id }, tag);
-        }
-
-        // DELETE: api/tags/collection-groups/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCollectionGroupTag(int id)
-        {
-            CollectionGroupTag tag = await Context.CollectionGroupTags.FindAsync(id);
-            if (tag == null)
-            {
-                return NotFound();
-            }
-            Context.CollectionGroupTags.Remove(tag);
-            await Context.SaveChangesAsync();
-            return NoContent();
-        }
-
-        private bool CollectionGroupTagExists(int id) => Context.CollectionGroupTags.Any(e => e.Id == id);
     }
 }

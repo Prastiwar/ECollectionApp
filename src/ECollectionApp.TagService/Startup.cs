@@ -1,7 +1,9 @@
 using ECollectionApp.AspNetCore.Microservice;
 using ECollectionApp.TagService.Data;
+using ECollectionApp.TagService.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +26,10 @@ namespace ECollectionApp.TagService
             });
 
             services.AddDbContext<TagDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TagDb")));
+
+            services.Configure<JsonOptions>(options => {
+                options.JsonSerializerOptions.Converters.Add(new TagJsonConverter());
+            });
         }
 
         public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)

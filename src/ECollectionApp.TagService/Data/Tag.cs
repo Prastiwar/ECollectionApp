@@ -1,11 +1,19 @@
-﻿namespace ECollectionApp.TagService.Data
+﻿using System;
+using System.Collections.Generic;
+
+namespace ECollectionApp.TagService.Data
 {
-    public class Tag
+    public class Tag : IEquatable<Tag>
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
 
-        public override string ToString() => Name;
+        public override bool Equals(object obj) => Equals(obj as Tag);
+        public bool Equals(Tag other) => other != null && Id == other.Id && Name == other.Name;
+        public override int GetHashCode() => HashCode.Combine(Id, Name);
+
+        public static bool operator ==(Tag left, Tag right) => EqualityComparer<Tag>.Default.Equals(left, right);
+        public static bool operator !=(Tag left, Tag right) => !(left == right);
     }
 }

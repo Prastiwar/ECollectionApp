@@ -14,7 +14,9 @@ namespace ECollectionApp.TagService.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Tag>();
+            modelBuilder.Entity<Tag>()
+                        .HasIndex(x => x.Name)
+                        .IsUnique();
 
             modelBuilder.Entity<CollectionGroupTag>()
                         .HasKey(groupTag => new { groupTag.TagId, groupTag.GroupId });
