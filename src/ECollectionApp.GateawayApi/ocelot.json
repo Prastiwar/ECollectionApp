@@ -2,7 +2,7 @@
     "Routes": [
         // Collection Service
         {
-            "DownstreamPathTemplate": "/api/collection",
+            "DownstreamPathTemplate": "/api/collections",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
@@ -10,12 +10,12 @@
                     "Port": 53129
                 }
             ],
-            "UpstreamPathTemplate": "/api/collection",
+            "UpstreamPathTemplate": "/api/collections",
             "UpstreamHttpMethod": [ "GET", "POST" ],
             "Key": "Collections"
         },
         {
-            "DownstreamPathTemplate": "/api/collection/{id}",
+            "DownstreamPathTemplate": "/api/collections/{id}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
@@ -23,7 +23,7 @@
                     "Port": 53129
                 }
             ],
-            "UpstreamPathTemplate": "/api/collection/{id}",
+            "UpstreamPathTemplate": "/api/collections/{id}",
             "UpstreamHttpMethod": [ "GET", "PUT", "PATCH", "DELETE" ],
             "Key": "Collection"
         },
@@ -40,9 +40,6 @@
             ],
             "UpstreamPathTemplate": "/api/collection-groups",
             "UpstreamHttpMethod": [ "GET", "POST" ],
-            //"DelegatingHandlers": [
-            //    "CollectionGroupHandler"
-            //],
             "Key": "CollectionGroups"
         },
         {
@@ -58,7 +55,6 @@
             "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ],
             "Key": "CollectionGroup"
         },
-
 
         // Tags Service
         {
@@ -87,6 +83,7 @@
             "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ],
             "Key": "Tag"
         },
+
         // Tags Service - collection-groups
         {
             "DownstreamPathTemplate": "/api/collection-groups/{id}/tags",

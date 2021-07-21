@@ -5,27 +5,34 @@
 
 <div class="text-center">
     <p>Hey, there you have your resources for group @Model.Group.Name.</p>
-    <div class="row">
-        @foreach (Collection collection in Model.Collections)
-        {
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">@collection.Name</h5>
-                    <p class="card-text">@collection.Value</p>
-                    <a class="btn btn-primary" asp-controller="Collection" asp-action="Edit" asp-route-id="@collection.Id">Edit</a>
-                    <a class="btn btn-danger" asp-controller="Collection" asp-action="Delete" asp-route-id="@collection.Id">Delete</a>
-                </div>
-            </div>
-        </div>
-        }
-        <div class="col-sm-6">
-            <div class="card">
+
+    <div class="row row-cols-auto row-cols-md-2">
+        <div class="col-auto mb-4">
+            <div class="card text-white bg-warning h-100">
                 <div class="card-body">
                     <h5 class="card-title">Create new value</h5>
-                    <a class="btn btn-primary" asp-controller="Collection" asp-action="Create">Create</a>
+                    <a onclick="showInPopup('@Url.Action("Create", "Collection", null, Context.Request.Scheme)', 'New Collection')" class="btn btn-primary text-white">Create</a>
                 </div>
             </div>
         </div>
+        @foreach (Collection collection in Model.Collections)
+        {
+
+            <div class="col-auto mb-4">
+                <div class="card text-white bg-primary h-100">
+                    <div class="card-header">@collection.Name</div>
+                    <div class="card-body">
+                        <p class="card-text text-wrap" style="max-width:12rem">@collection.Value</p>
+                    </div>
+                    <div class="card-footer">
+                        <a class="btn btn-primary" onclick="showInPopup('@Url.Action("Edit", "Collection", new { id = collection.Id }, Context.Request.Scheme)', 'Update Collection')"><i class="fas fa-pencil-alt"></i></a>
+                        <form asp-controller="CollectionGroup" asp-action="Delete" asp-route-id="@collection.Id" onsubmit="return jQueryAjaxDelete(this)" class="d-inline">
+                            <input type="hidden" asp-for="@collection.Id" />
+                            <button class="btn btn-danger" type="submit"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>
