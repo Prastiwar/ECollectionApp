@@ -31,7 +31,7 @@ namespace ECollectionApp.WebUI.Controllers
 
         protected async Task<ITagClient> GetTagClientAsync() => TagClient.WithToken(await HttpContext.GetAccessTokenAsync());
 
-        // GET: CollectionGroupController
+        // GET: CollectionGroup
         public async Task<IActionResult> Index()
         {
             ICollectionClient client = await GetCollectionClientAsync();
@@ -39,7 +39,7 @@ namespace ECollectionApp.WebUI.Controllers
             return View(groups);
         }
 
-        // GET: CollectionGroupController/Details/5
+        // GET: CollectionGroup/Details/5
         public async Task<IActionResult> Details(int id)
         {
             ICollectionClient client = await GetCollectionClientAsync();
@@ -56,7 +56,7 @@ namespace ECollectionApp.WebUI.Controllers
             return View(viewModel);
         }
 
-        // GET: CollectionGroupController/Create
+        // GET: CollectionGroup/Create
         public IActionResult Create()
         {
             CollectionGroup group = new CollectionGroup() {
@@ -71,7 +71,7 @@ namespace ECollectionApp.WebUI.Controllers
             return View(viewModel);
         }
 
-        // POST: CollectionGroupController/Create
+        // POST: CollectionGroup/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CollectionGroupViewModel viewModel)
@@ -92,7 +92,7 @@ namespace ECollectionApp.WebUI.Controllers
             }
         }
 
-        // GET: CollectionGroupController/Edit/5
+        // GET: CollectionGroup/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
             ICollectionClient client = await GetCollectionClientAsync();
@@ -109,7 +109,7 @@ namespace ECollectionApp.WebUI.Controllers
             return View(viewModel);
         }
 
-        // POST: CollectionGroupController/Edit/5
+        // POST: CollectionGroup/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, CollectionGroupViewModel viewModel)
@@ -134,7 +134,7 @@ namespace ECollectionApp.WebUI.Controllers
             }
         }
 
-        // GET: CollectionGroupController/Delete/5
+        // GET: CollectionGroup/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
