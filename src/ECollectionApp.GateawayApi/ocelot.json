@@ -99,6 +99,7 @@
             ],
             "UpstreamPathTemplate": "/api/collection-groups/{id}/tags",
             "UpstreamHttpMethod": [ "GET", "PUT" ],
+            "Priority": 2,
             "Key": "CollectionGroupTags"
         }
     ],

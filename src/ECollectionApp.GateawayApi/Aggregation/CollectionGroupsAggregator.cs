@@ -27,6 +27,11 @@ namespace ECollectionApp.GatewayApi.Aggregation
         public async Task<DownstreamResponse> Aggregate(List<HttpContext> responses)
         {
             DownstreamResponse groupResponse = responses[0].Items.DownstreamResponse();
+            bool isSuccess = (int)groupResponse.StatusCode >= 200 && (int)groupResponse.StatusCode <= 299;
+            if (!isSuccess)
+            {
+                return new DownstreamResponse(groupResponse.Content, groupResponse.StatusCode, groupResponse.Headers, groupResponse.ReasonPhrase);
+            }
             HttpContent content = groupResponse.Content;
             if (content.Headers.ContentType == null)
             {
