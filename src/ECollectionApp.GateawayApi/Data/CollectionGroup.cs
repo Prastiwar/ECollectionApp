@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ECollectionApp.WebUI.Data
+namespace ECollectionApp.GatewayApi.Data
 {
     public class CollectionGroup
     {

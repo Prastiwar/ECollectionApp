@@ -11,8 +11,9 @@ namespace ECollectionApp.AspNetCore.Serialization
     {
         public bool CanDeserialize(HttpContent content) => CanSerialize(content.Headers.ContentType);
 
-        public bool CanSerialize(MediaTypeHeaderValue mediaType) => string.Compare(mediaType.MediaType, "application/json") == 0 ||
-                                                                    string.Compare(mediaType.MediaType, "text/plain") == 0;
+        public bool CanSerialize(MediaTypeHeaderValue mediaType) => mediaType != null &&
+                                                                    (string.Compare(mediaType.MediaType, "application/json") == 0 ||
+                                                                    string.Compare(mediaType.MediaType, "text/plain") == 0);
 
         public async Task<T> DeserializeAsync<T>(HttpContent content)
         {

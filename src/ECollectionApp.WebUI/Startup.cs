@@ -76,6 +76,11 @@ namespace ECollectionApp
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme);
             });
 
+            services.AddHttpClient<ITagClient, TagClient>((provider, client) => {
+                client.BaseAddress = new Uri(Configuration["GatewayUrl"]);
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme);
+            });
+
             services.AddHttpContentDeserializationHandler();
 
             IMvcBuilder mvcBuilder = services.AddControllersWithViews();

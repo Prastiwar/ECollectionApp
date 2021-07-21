@@ -1,5 +1,6 @@
 {
     "Routes": [
+        // Collection Service
         {
             "DownstreamPathTemplate": "/api/collection",
             "DownstreamScheme": "http",
@@ -10,7 +11,7 @@
                 }
             ],
             "UpstreamPathTemplate": "/api/collection",
-            "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
+            "UpstreamHttpMethod": [ "GET", "POST" ],
             "Key": "Collections"
         },
         {
@@ -23,11 +24,11 @@
                 }
             ],
             "UpstreamPathTemplate": "/api/collection/{id}",
-            "UpstreamHttpMethod": [ "GET", "DELETE" ],
+            "UpstreamHttpMethod": [ "GET", "PUT", "PATCH", "DELETE" ],
             "Key": "Collection"
         },
 
-
+        // Collection Group Service
         {
             "DownstreamPathTemplate": "/api/collection-groups",
             "DownstreamScheme": "http",
@@ -38,7 +39,10 @@
                 }
             ],
             "UpstreamPathTemplate": "/api/collection-groups",
-            "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
+            "UpstreamHttpMethod": [ "GET", "POST" ],
+            //"DelegatingHandlers": [
+            //    "CollectionGroupHandler"
+            //],
             "Key": "CollectionGroups"
         },
         {
@@ -51,26 +55,14 @@
                 }
             ],
             "UpstreamPathTemplate": "/api/collection-groups/{id}",
-            "UpstreamHttpMethod": [ "GET", "DELETE" ],
+            "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ],
             "Key": "CollectionGroup"
         },
-        {
-            "DownstreamPathTemplate": "/api/collection-groups?accountId={accountId}",
-            "DownstreamScheme": "http",
-            "DownstreamHostAndPorts": [
-                {
-                    "Host": "localhost",
-                    "Port": 1934
-                }
-            ],
-            "UpstreamPathTemplate": "/api/collection-groups?accountId={accountId}",
-            "UpstreamHttpMethod": [ "GET" ],
-            "Key": "AccountCollectionGroups"
-        },
 
 
+        // Tags Service
         {
-            "DownstreamPathTemplate": "/api/tags/collection-groups",
+            "DownstreamPathTemplate": "/api/tags",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
@@ -78,12 +70,12 @@
                     "Port": 15796
                 }
             ],
-            "UpstreamPathTemplate": "/api/tags/collection-groups",
-            "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
-            "Key": "CollectionGroupsTags"
+            "UpstreamPathTemplate": "/api/tags",
+            "UpstreamHttpMethod": [ "GET", "POST" ],
+            "Key": "Tags"
         },
         {
-            "DownstreamPathTemplate": "/api/tags/collection-groups/{id}",
+            "DownstreamPathTemplate": "/api/tags/{id}",
             "DownstreamScheme": "http",
             "DownstreamHostAndPorts": [
                 {
@@ -91,12 +83,35 @@
                     "Port": 15796
                 }
             ],
-            "UpstreamPathTemplate": "/api/tags/collection-groups/{id}",
-            "UpstreamHttpMethod": [ "GET", "DELETE" ],
+            "UpstreamPathTemplate": "/api/tags/{id}",
+            "UpstreamHttpMethod": [ "GET", "PUT", "DELETE" ],
+            "Key": "Tag"
+        },
+        // Tags Service - collection-groups
+        {
+            "DownstreamPathTemplate": "/api/collection-groups/{id}/tags",
+            "DownstreamScheme": "http",
+            "DownstreamHostAndPorts": [
+                {
+                    "Host": "localhost",
+                    "Port": 15796
+                }
+            ],
+            "UpstreamPathTemplate": "/api/collection-groups/{id}/tags",
+            "UpstreamHttpMethod": [ "GET", "PUT" ],
             "Key": "CollectionGroupTags"
         }
     ],
     "Aggregates": [
+        {
+            "RouteKeys": [
+                "CollectionGroups",
+                "CollectionGroupTags" // TODO: Refactor this endpoint, it's used to call this api inside aggregator
+            ],
+            "UpstreamPathTemplate": "/api/collection-groups?{everything}",
+            "Priority": 2,
+            "Aggregator": "CollectionGroupsAggregator"
+        },
         {
             "RouteKeys": [
                 "CollectionGroup",
@@ -105,33 +120,6 @@
             "UpstreamPathTemplate": "/api/collection-groups/{id}?include=tags",
             "Priority": 2,
             "Aggregator": "CollectionGroupAggregator"
-        },
-        {
-            "RouteKeys": [
-                "CollectionGroups",
-                "CollectionGroupsTags"
-            ],
-            "UpstreamPathTemplate": "/api/collection-groups?include=tags",
-            "Priority": 2,
-            "Aggregator": "CollectionGroupsAggregator"
-        },
-        {
-            "RouteKeys": [
-                "AccountCollectionGroups",
-                "CollectionGroupsTags"
-            ],
-            "UpstreamPathTemplate": "/api/collection-groups?accountId={accountId}&include=tags",
-            "Priority": 3,
-            "Aggregator": "AccountCollectionGroupsAggregator"
-        },
-        {
-            "RouteKeys": [
-                "AccountCollectionGroups",
-                "CollectionGroupsTags"
-            ],
-            "UpstreamPathTemplate": "/api/collection-groups?include=tags&accountId={accountId}",
-            "Priority": 3,
-            "Aggregator": "AccountCollectionGroupsAggregator"
         }
     ]
 }

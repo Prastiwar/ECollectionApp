@@ -28,6 +28,7 @@
 
         public static class Tag
         {
+            public static string GroupTags(int groupId) => $"api/collection-groups/{groupId}/tags";
         }
     }
 }

@@ -36,7 +36,10 @@ namespace ECollectionApp.GatewayApi
 
             services.AddTransient<IDefinedAggregator, CollectionGroupAggregator>();
             services.AddTransient<IDefinedAggregator, CollectionGroupsAggregator>();
-            services.AddTransient<IDefinedAggregator, AccountCollectionGroupsAggregator>();
+
+            services.AddHttpContentDeserializationHandler();
+
+            services.AddHttpClient();
 
             services.AddOcelot();
         }

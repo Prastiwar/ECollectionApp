@@ -8,5 +8,7 @@ namespace ECollectionApp.WebUI.ViewModels
         public CollectionGroup Group { get; set; }
 
         public IEnumerable<Collection> Collections { get; set; }
+
+        public string Tags { get; set; }
     }
 }
