@@ -1,6 +1,8 @@
 using ECollectionApp.AspNetCore.Microservice;
+using ECollectionApp.TagService.Authorization;
 using ECollectionApp.TagService.Data;
 using ECollectionApp.TagService.Serialization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +26,9 @@ namespace ECollectionApp.TagService
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ECollectionApp.TagService", Version = "v1" });
             });
+
+            services.AddSingleton<IAuthorizationHandler, TagAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationHandler, CollectionGroupTagAuthorizationHandler>();
 
             services.AddDbContext<TagDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TagDb")));
 

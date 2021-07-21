@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ECollectionApp.AspNetCore.Authorization
+namespace ECollectionApp.AspNetCore.Microservice.Authorization
 {
     public class HasScopeHandler : AuthorizationHandler<HasScopeRequirement>
     {

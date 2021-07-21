@@ -1,4 +1,5 @@
 ﻿using ECollectionApp.AspNetCore.Microservice;
+using ECollectionApp.AspNetCore.Microservice.Authorization;
 using ECollectionApp.AspNetCore.Patch;
 using ECollectionApp.CollectionService.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -54,6 +55,11 @@ namespace ECollectionApp.CollectionService.Controllers
             if (collection == null)
             {
                 return NotFound();
+            }
+            AuthorizationResult result = await this.AuthorizeAsync(collection, Operations.Update);
+            if (!result.Succeeded)
+            {
+                return Forbid();
             }
             ChangePatcher.ApplyTo(collection, document, ModelState);
             await Context.SaveChangesAsync();

@@ -35,75 +35,20 @@ namespace ECollectionApp.CollectionGroupService.Controllers
 
         // GET: api/collection-groups/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CollectionGroup>> GetCollectionGroup(int id)
-        {
-            ActionResult<CollectionGroup> result = await GetEntity(id);
-            int accountId = User.GetAccountId();
-            if (result.Value != null && result.Value.AccountId != accountId)
-            {
-                return Unauthorized();
-            }
-            return result;
-        }
+        public Task<ActionResult<CollectionGroup>> GetCollectionGroup(int id) => GetEntity(id);
 
         // PUT: api/collection-groups/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCollectionGroup(int id, CollectionGroup collectionGroup)
-        {
-            int entityId = GetEntityId(collectionGroup);
-            if (collectionGroup == null || (entityId > 0 && entityId != id))
-            {
-                return BadRequest();
-            }
-            CollectionGroup foundGroup = await Context.Set<CollectionGroup>().FindAsync(id);
-            if (foundGroup == null)
-            {
-                return NotFound();
-            }
-            if (collectionGroup.AccountId != foundGroup.AccountId)
-            {
-                return BadRequest();
-            }
-            int accountId = User.GetAccountId();
-            if (collectionGroup.AccountId != accountId)
-            {
-                return Unauthorized();
-            }
-            foundGroup.Name = collectionGroup.Name;
-            await Context.SaveChangesAsync();
-            return NoContent();
-        }
+        public Task<IActionResult> PutCollectionGroup(int id, CollectionGroup collectionGroup) => PutEntity(id, collectionGroup);
 
         // POST: api/collection-groups
         [HttpPost]
         public Task<ActionResult<CollectionGroup>> PostCollectionGroup(CollectionGroup collectionGroup)
-        {
-            int accountId = User.GetAccountId();
-            if (collectionGroup.AccountId != accountId)
-            {
-                return Task.FromResult<ActionResult<CollectionGroup>>(Unauthorized());
-            }
-            return PostEntity(collectionGroup, () => CreatedAtAction(nameof(GetCollectionGroup), new { id = collectionGroup.Id }, collectionGroup));
-        }
+            => PostEntity(collectionGroup, () => CreatedAtAction(nameof(GetCollectionGroup), new { id = collectionGroup.Id }, collectionGroup));
 
         // DELETE: api/collection-groups/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCollectionGroup(int id)
-        {
-            CollectionGroup collectionGroup = await Context.Set<CollectionGroup>().FindAsync(id);
-            if (collectionGroup == null)
-            {
-                return NotFound();
-            }
-            int accountId = User.GetAccountId();
-            if (collectionGroup.AccountId != accountId)
-            {
-                return Unauthorized();
-            }
-            Context.Set<CollectionGroup>().Remove(collectionGroup);
-            await Context.SaveChangesAsync();
-            return NoContent();
-        }
+        public Task<IActionResult> DeleteCollectionGroup(int id) => DeleteEntity(id);
     }
 }

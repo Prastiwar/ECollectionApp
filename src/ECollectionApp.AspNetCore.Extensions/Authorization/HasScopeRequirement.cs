@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using System;
 
-namespace ECollectionApp.AspNetCore.Authorization
+namespace ECollectionApp.AspNetCore.Microservice.Authorization
 {
     public class HasScopeRequirement : IAuthorizationRequirement
     {

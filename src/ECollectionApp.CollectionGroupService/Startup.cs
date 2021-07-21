@@ -1,5 +1,7 @@
 using ECollectionApp.AspNetCore.Microservice;
+using ECollectionApp.CollectionGroupService.Authorization;
 using ECollectionApp.CollectionGroupService.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +24,7 @@ namespace ECollectionApp.CollectionGroupService
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ECollectionApp.CollectionGroupService", Version = "v1" });
             });
-
+            services.AddSingleton<IAuthorizationHandler, CollectionGroupAuthorizationHandler>();
             services.AddDbContext<CollectionGroupDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CollectionGroupDb")));
         }
 

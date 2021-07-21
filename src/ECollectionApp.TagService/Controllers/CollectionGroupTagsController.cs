@@ -1,4 +1,5 @@
 ﻿using ECollectionApp.AspNetCore.Microservice;
+using ECollectionApp.AspNetCore.Microservice.Authorization;
 using ECollectionApp.TagService.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +41,16 @@ namespace ECollectionApp.CollectionService.Controllers
             {
                 tags = tags.Where(t => EF.Functions.Like(t.Name, search));
             }
-            return await tags.ToArrayAsync();
+            Tag[] result = await tags.ToArrayAsync();
+            foreach (Tag tag in result)
+            {
+                AuthorizationResult authResult = await this.AuthorizeAsync(tag, Operations.Read);
+                if (!authResult.Succeeded)
+                {
+                    return Forbid();
+                }
+            }
+            return result;
         }
 
         // PUT: api/collection-groups/5/tags
@@ -78,6 +88,11 @@ namespace ECollectionApp.CollectionService.Controllers
                     Tag foundTag = await Context.Set<Tag>().FirstOrDefaultAsync(t => t.Name == tag.Name);
                     if (foundTag == null)
                     {
+                        AuthorizationResult authResult = await this.AuthorizeAsync(tag, Operations.Create);
+                        if (!authResult.Succeeded)
+                        {
+                            return Forbid();
+                        }
                         await Context.Set<Tag>().AddAsync(tag);
                         needToSave = true;
                         continue;
@@ -103,11 +118,27 @@ namespace ECollectionApp.CollectionService.Controllers
             CollectionGroupTag[] tagsNotRemoved = tagsToRemove.Except(tagsToCompleteRemove).ToArray();
             if (tagsToCompleteRemove.Length > 0)
             {
+                foreach (CollectionGroupTag tag in tagsToCompleteRemove)
+                {
+                    AuthorizationResult authResult = await this.AuthorizeAsync(tag, Operations.Delete);
+                    if (!authResult.Succeeded)
+                    {
+                        return Forbid();
+                    }
+                }
                 Context.Set<CollectionGroupTag>().RemoveRange(tagsToCompleteRemove);
             }
             CollectionGroupTag[] distinctTagsToAdd = tagsToAdd.Except(tagsNotRemoved).ToArray();
             if (distinctTagsToAdd.Length > 0)
             {
+                foreach (CollectionGroupTag tag in distinctTagsToAdd)
+                {
+                    AuthorizationResult authResult = await this.AuthorizeAsync(tag, Operations.Create);
+                    if (!authResult.Succeeded)
+                    {
+                        return Forbid();
+                    }
+                }
                 await Context.Set<CollectionGroupTag>().AddRangeAsync(distinctTagsToAdd);
                 await Context.SaveChangesAsync();
             }

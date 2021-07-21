@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ECollectionApp.AspNetCore.Microservice.Authorization;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
@@ -28,28 +30,70 @@ namespace ECollectionApp.AspNetCore.Microservice
         protected abstract void SetEntityId(TEntity entity, int id);
 
         /// <summary> Get all entities existing in database </summary>
-        protected async Task<ActionResult<IEnumerable<TEntity>>> GetEntities() => await Context.Set<TEntity>().ToArrayAsync();
+        protected async Task<ActionResult<IEnumerable<TEntity>>> GetEntities(bool authorizeResults = true)
+        {
+            TEntity[] result = await Context.Set<TEntity>().ToArrayAsync();
+            if (authorizeResults)
+            {
+                foreach (TEntity entity in result)
+                {
+                    AuthorizationResult authResult = await this.AuthorizeAsync(entity, Operations.Read);
+                    if (!authResult.Succeeded)
+                    {
+                        return Forbid();
+                    }
+                }
+            }
+            return result;
+        }
 
         /// <summary> Get all entities existing in database matching query </summary>
-        protected async Task<ActionResult<IEnumerable<TEntity>>> GetEntities(Func<IQueryable<TEntity>, IQueryable<TEntity>> query) => await query.Invoke(Context.Set<TEntity>()).ToArrayAsync();
+        protected async Task<ActionResult<IEnumerable<TEntity>>> GetEntities(Func<IQueryable<TEntity>, IQueryable<TEntity>> query, bool authorizeResults = true)
+        {
+            TEntity[] result = await query.Invoke(Context.Set<TEntity>()).ToArrayAsync();
+            if (authorizeResults)
+            {
+                foreach (TEntity entity in result)
+                {
+                    AuthorizationResult authResult = await this.AuthorizeAsync(entity, Operations.Read);
+                    if (!authResult.Succeeded)
+                    {
+                        return Forbid();
+                    }
+                }
+            }
+            return result;
+        }
 
         /// <summary> Get entity with given id </summary>
-        protected async Task<ActionResult<TEntity>> GetEntity(int id)
+        protected async Task<ActionResult<TEntity>> GetEntity(int id, bool authorizeResults = true)
         {
-            TEntity model = await Context.Set<TEntity>().FindAsync(id);
-            if (model != null)
+            TEntity entity = await Context.Set<TEntity>().FindAsync(id);
+            if (entity != null)
             {
-                return model;
+                if (authorizeResults)
+                {
+                    return await this.AuthorizeResultAsync(entity, Operations.Read);
+                }
+                return entity;
             }
             return NotFound();
         }
 
         /// <summary> Add entity to database </summary>
-        protected async Task<ActionResult<TEntity>> PostEntity(TEntity value, Func<CreatedAtActionResult> getResult)
+        protected async Task<ActionResult<TEntity>> PostEntity(TEntity value, Func<CreatedAtActionResult> getResult, bool authorizeResults = true)
         {
             if (value == null || GetEntityId(value) != 0)
             {
                 return BadRequest();
+            }
+            if (authorizeResults)
+            {
+                AuthorizationResult result = await this.AuthorizeAsync(value, Operations.Create);
+                if (!result.Succeeded)
+                {
+                    return Forbid();
+                }
             }
             await Context.Set<TEntity>().AddAsync(value);
             await Context.SaveChangesAsync();
@@ -57,7 +101,7 @@ namespace ECollectionApp.AspNetCore.Microservice
         }
 
         /// <summary> Update entity in database </summary>
-        protected async Task<IActionResult> PutEntity(int id, TEntity value)
+        protected async Task<IActionResult> PutEntity(int id, TEntity value, bool authorizeResults = true)
         {
             int entityId = GetEntityId(value);
             if (value == null || (entityId > 0 && entityId != id))
@@ -67,6 +111,14 @@ namespace ECollectionApp.AspNetCore.Microservice
             if (entityId == 0)
             {
                 SetEntityId(value, id);
+            }
+            if (authorizeResults)
+            {
+                AuthorizationResult result = await this.AuthorizeAsync(value, Operations.Update);
+                if (!result.Succeeded)
+                {
+                    return Forbid();
+                }
             }
             Context.Entry(value).State = EntityState.Modified;
             try
@@ -87,7 +139,7 @@ namespace ECollectionApp.AspNetCore.Microservice
         }
 
         /// <summary> Remove entity from database </summary>
-        protected async Task<IActionResult> DeleteEntity(params object[] keyValues)
+        protected async Task<IActionResult> DeleteEntity(bool authorizeResults, params object[] keyValues)
         {
             if (keyValues == null)
             {
@@ -98,13 +150,24 @@ namespace ECollectionApp.AspNetCore.Microservice
             {
                 return NotFound();
             }
+            if (authorizeResults)
+            {
+                AuthorizationResult result = await this.AuthorizeAsync(entity, Operations.Delete);
+                if (!result.Succeeded)
+                {
+                    return Forbid();
+                }
+            }
             Context.Set<TEntity>().Remove(entity);
             await Context.SaveChangesAsync();
             return NoContent();
         }
 
         /// <summary> Remove entity from database </summary>
-        protected Task<IActionResult> DeleteEntity(int id) => DeleteEntity(new object[] { id });
+        protected Task<IActionResult> DeleteEntity(params object[] keyValues) => DeleteEntity(true, keyValues);
+
+        /// <summary> Remove entity from database </summary>
+        protected Task<IActionResult> DeleteEntity(int id, bool authorizeResults = true) => DeleteEntity(authorizeResults, new object[] { id });
 
         protected IQueryable<TEntity> PaginateEntitiesQuery(IQueryable<TEntity> entities, PaginationMetadata pagination)
         {

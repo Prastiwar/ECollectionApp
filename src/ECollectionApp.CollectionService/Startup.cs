@@ -1,6 +1,8 @@
 ﻿using ECollectionApp.AspNetCore.Microservice;
 using ECollectionApp.AspNetCore.Patch.Converters;
+using ECollectionApp.CollectionService.Authorization;
 using ECollectionApp.CollectionService.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +26,8 @@ namespace ECollectionApp.CollectionService
             services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ECollectionApp.CollectionService", Version = "v1" });
             });
+
+            services.AddSingleton<IAuthorizationHandler, CollectionAuthorizationHandler>();
 
             services.AddChangePatcher();
 

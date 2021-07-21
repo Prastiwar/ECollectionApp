@@ -1,4 +1,4 @@
-﻿using ECollectionApp.AspNetCore.Authorization;
+﻿using ECollectionApp.AspNetCore.Microservice.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
