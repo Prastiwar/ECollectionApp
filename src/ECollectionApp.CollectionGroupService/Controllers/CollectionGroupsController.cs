@@ -1,8 +1,10 @@
 ﻿using ECollectionApp.AspNetCore.Microservice;
 using ECollectionApp.CollectionGroupService.Data;
+using ECollectionApp.CollectionGroupService.Messaging;
 using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -58,8 +60,16 @@ namespace ECollectionApp.CollectionGroupService.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCollectionGroup(int id)
         {
-            //await PublishEndpoint.Publish<>(,);
-            return await DeleteEntity(id);
+            IActionResult results = await DeleteEntity(id);
+            if (results is IStatusCodeActionResult statusCodeActionResult)
+            {
+                int? statusCode = statusCodeActionResult.StatusCode;
+                if (statusCode >= 200 && statusCode <= 299)
+                {
+                    await PublishEndpoint.Publish(new CollectionGroupDeletedEvent(id));
+                }
+            }
+            return results;
         }
     }
 }

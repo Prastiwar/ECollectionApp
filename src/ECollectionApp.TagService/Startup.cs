@@ -1,7 +1,10 @@
 using ECollectionApp.AspNetCore.Microservice;
+using ECollectionApp.CollectionGroupService.Messaging;
 using ECollectionApp.TagService.Authorization;
+using ECollectionApp.TagService.Consumers;
 using ECollectionApp.TagService.Data;
 using ECollectionApp.TagService.Serialization;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +38,18 @@ namespace ECollectionApp.TagService
             services.Configure<JsonOptions>(options => {
                 options.JsonSerializerOptions.Converters.Add(new TagJsonConverter());
             });
+
+            services.AddMassTransit(config => {
+                config.AddConsumer<CollectionGroupTagConsumer>();
+                config.UsingRabbitMq((ctx, cfg)=> {
+                    cfg.Host(Configuration["RabbitMq:Host"]);
+
+                    cfg.ReceiveEndpoint(EventBusConstants.CollectionGroupQueue, c => {
+                        c.ConfigureConsumer<CollectionGroupTagConsumer>(ctx);
+                    });
+                });
+            });
+            services.AddScoped<CollectionGroupTagConsumer>();
         }
 
         public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
