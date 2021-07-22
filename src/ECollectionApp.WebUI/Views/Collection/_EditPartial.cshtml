@@ -1,0 +1,24 @@
+﻿@model Collection
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<input type="hidden" asp-for="Id" />
+<input type="hidden" asp-for="GroupId" />
+<div class="form-group">
+    <label asp-for="Name" class="control-label"></label>
+    <div class="input-group">
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <label asp-for="Value" class="control-label"></label>
+    <div class="input-group">
+        <textarea asp-for="Value" class="form-control"></textarea>
+    </div>
+    <span asp-validation-for="Value" class="text-danger"></span>
+</div>
+<div class="form-group">
+    <div class="col-md-6 offset-md-3">
+        <input type="submit" value="Submit" class="btn btn-primary btn-block" />
+    </div>
+</div>

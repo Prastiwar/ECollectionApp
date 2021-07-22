@@ -4,36 +4,28 @@
 }
 
 <div class="text-center">
-    <p>Hey, there you have your resources for group @Model.Group.Name.</p>
-
-    <div class="row row-cols-auto row-cols-md-2">
-        <div class="col-auto mb-4">
-            <div class="card text-white bg-warning h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Create new value</h5>
-                    <a onclick="showInPopup('@Url.Action("Create", "Collection", new { groupId = Model.Group.Id}, Context.Request.Scheme)', 'New Collection')" class="btn btn-primary text-white">Create</a>
-                </div>
-            </div>
+    <div class="card mb-5 text-white">
+        <div class="card-header bg-info d-flex justify-content-between align-items-center">
+            <a class="btn text-white" asp-controller="Home" asp-action="Index"><i class="fas fa-arrow-left"></i></a>
+            <h5 class="mt-2"><b>@Model.Group.Name</b> collections</h5>
+            <br/>
         </div>
+    </div>
+    <div class="row row-cols-auto row-cols-md-2">
+        @{
+            await Html.RenderPartialAsync("_NewCardPartial", new NewCardViewModel() {
+                Message = "Create new",
+                Title = "New Collection",
+                Url = Url.Action("Create", "Collection", new { groupId = Model.Group.Id }, Context.Request.Scheme)
+            });
+        }
         @foreach (Collection collection in Model.Collections)
         {
-
-            <div class="col-auto mb-4">
-                <div class="card text-white bg-primary h-100">
-                    <div class="card-header">@collection.Name</div>
-                    <div class="card-body">
-                        <p class="card-text text-wrap" style="max-width:12rem">@collection.Value</p>
-                    </div>
-                    <div class="card-footer">
-                        <a class="btn btn-primary" onclick="showInPopup('@Url.Action("Edit", "Collection", new { id = collection.Id }, Context.Request.Scheme)', 'Update Collection')"><i class="fas fa-pencil-alt"></i></a>
-                        <form asp-controller="CollectionGroup" asp-action="Delete" asp-route-id="@collection.Id" asp-route-groupId="@collection.GroupId" onsubmit="return jQueryAjaxDelete(this)" class="d-inline">
-                            <input type="hidden" asp-for="@collection.Id" />
-                            <input type="hidden" asp-for="@collection.GroupId" />
-                            <button class="btn btn-danger" type="submit"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            await Html.RenderPartialAsync("_CardPartial", new CardViewModel() {
+                Header = collection.Name,
+                Message = collection.Value,
+                Footer = await Html.PartialAsync("_CollectionButtonsPartial", collection)
+            });
         }
     </div>
 </div>

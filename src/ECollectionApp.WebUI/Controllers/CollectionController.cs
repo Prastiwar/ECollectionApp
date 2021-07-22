@@ -49,7 +49,7 @@ namespace ECollectionApp.WebUI.Controllers
             try
             {
                 await client.CreateCollectionAsync(collection);
-                return RedirectToAction("Details", "CollectionGroup", collection.GroupId);
+                return RedirectToAction("Details", "CollectionGroup", new { id = collection.GroupId });
             }
             catch (Exception ex)
             {
@@ -83,7 +83,7 @@ namespace ECollectionApp.WebUI.Controllers
             try
             {
                 await client.UpdateCollectionAsync(collection);
-                return RedirectToAction("Details", "CollectionGroup", collection.GroupId);
+                return RedirectToAction("Details", "CollectionGroup", new { id = collection.GroupId });
             }
             catch (Exception ex)
             {
@@ -106,7 +106,7 @@ namespace ECollectionApp.WebUI.Controllers
             {
                 Logger.LogError(ex, "Couldn't remove group with id " + id);
             }
-            return RedirectToAction("Details", "CollectionGroup", groupId);
+            return RedirectToAction("Details", "CollectionGroup", new { id = groupId });
         }
     }
 }

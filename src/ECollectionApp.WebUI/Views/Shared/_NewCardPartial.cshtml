@@ -1,0 +1,12 @@
+﻿@model NewCardViewModel
+
+<div class="col-auto mb-4">
+    <div class="card text-white h-100" style="background-color: #5c5ae0;">
+        <div class="card-body">
+            <h5 class="card-title">Create new value</h5>
+        </div>
+        <div class="card-footer">
+            <a onclick="showInPopup('@Model.Url', '@Model.Title')" class="btn" style="background-color: #f2a246;">@Model.Message</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+﻿@model CardViewModel
+
+<div class="col-auto mb-4">
+    <div class="card text-white bg-primary h-100">
+        <div class="card-header">@Model.Header</div>
+        <div class="card-body">
+            <p class="card-text text-wrap" style="max-width:12rem">
+                @Model.Message
+            </p>
+        </div>
+        <div class="card-footer">
+            @Model.Footer
+        </div>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+﻿@model Collection
+
+<a class="btn" style="background-color: #f75f00; " onclick="showInPopup('@Url.Action("Edit", "Collection", new { id = Model.Id }, Context.Request.Scheme)', 'Update Collection')"><i class="fas fa-pencil-alt"></i></a>
+<form asp-controller="Collection" asp-action="Delete" asp-route-id="@Model.Id" asp-route-groupId="@Model.GroupId" onsubmit="return jQueryAjaxDelete(this)" class="d-inline">
+    <input type="hidden" asp-for="@Model.Id" />
+    <input type="hidden" asp-for="@Model.GroupId" />
+    <button class="btn btn-danger" type="submit"><i class="fa fa-trash" aria-hidden="true"></i></button>
+</form>
