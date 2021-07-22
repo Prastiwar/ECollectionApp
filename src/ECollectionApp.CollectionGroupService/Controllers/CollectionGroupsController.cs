@@ -1,5 +1,6 @@
 ﻿using ECollectionApp.AspNetCore.Microservice;
 using ECollectionApp.CollectionGroupService.Data;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,13 @@ namespace ECollectionApp.CollectionGroupService.Controllers
     [Authorize]
     public class CollectionGroupsController : EntityController<CollectionGroup>
     {
-        public CollectionGroupsController(CollectionGroupDbContext context, ILogger<CollectionGroupsController> logger) : base(context, logger) => context.Database.EnsureCreated();
+        public CollectionGroupsController(CollectionGroupDbContext context, IPublishEndpoint publishEndpoint, ILogger<CollectionGroupsController> logger) : base(context, logger)
+        {
+            context.Database.EnsureCreated();
+            PublishEndpoint = publishEndpoint;
+        }
+
+        protected IPublishEndpoint PublishEndpoint { get; }
 
         protected override int GetEntityId(CollectionGroup entity) => entity.Id;
 
@@ -49,6 +56,10 @@ namespace ECollectionApp.CollectionGroupService.Controllers
 
         // DELETE: api/collection-groups/5
         [HttpDelete("{id}")]
-        public Task<IActionResult> DeleteCollectionGroup(int id) => DeleteEntity(id);
+        public async Task<IActionResult> DeleteCollectionGroup(int id)
+        {
+            //await PublishEndpoint.Publish<>(,);
+            return await DeleteEntity(id);
+        }
     }
 }

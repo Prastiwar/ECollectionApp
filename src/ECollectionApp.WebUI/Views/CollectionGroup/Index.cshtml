@@ -2,10 +2,7 @@
 @{
     ViewData["Title"] = "Your collection groups";
 }
-<div class="text-center">
-    <h1 class="display-4">Welcome @User.Identity.Name</h1>
-    <p>Your collection groups:</p>
-
+<div class="text-center py-5">
     <div class="row row-cols-auto row-cols-md-2">
         @{
             await Html.RenderPartialAsync("_NewCardPartial", new NewCardViewModel() {

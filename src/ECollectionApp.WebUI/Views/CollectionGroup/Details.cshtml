@@ -3,15 +3,13 @@
     ViewData["Title"] = Model.Group.Name;
 }
 
-<div class="text-center">
-    <div class="card mb-5 text-white">
-        <div class="card-header bg-info d-flex justify-content-between align-items-center">
-            <a class="btn text-white" asp-controller="Home" asp-action="Index"><i class="fas fa-arrow-left"></i></a>
-            <h5 class="mt-2"><b>@Model.Group.Name</b> collections</h5>
-            <br/>
-        </div>
+<div class="text-center text-white shadow-lg pr-3 pl-3">
+    <div class="bg-info d-flex justify-content-between align-items-center mb-3">
+        <a class="btn" asp-controller="Home" asp-action="Index"><i class="fas fa-arrow-left" style="color:white;"></i></a>
+        <h5 class="mt-2"><b>@Model.Group.Name</b> collections</h5>
+        <br />
     </div>
-    <div class="row row-cols-auto row-cols-md-2">
+    <div class="row row-cols-auto row-cols-md-2 border-info">
         @{
             await Html.RenderPartialAsync("_NewCardPartial", new NewCardViewModel() {
                 Message = "Create new",

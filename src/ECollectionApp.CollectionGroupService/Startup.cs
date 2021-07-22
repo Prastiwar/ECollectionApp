@@ -1,6 +1,7 @@
 using ECollectionApp.AspNetCore.Microservice;
 using ECollectionApp.CollectionGroupService.Authorization;
 using ECollectionApp.CollectionGroupService.Data;
+using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +26,15 @@ namespace ECollectionApp.CollectionGroupService
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ECollectionApp.CollectionGroupService", Version = "v1" });
             });
             services.AddSingleton<IAuthorizationHandler, CollectionGroupAuthorizationHandler>();
+
             services.AddDbContext<CollectionGroupDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CollectionGroupDb")));
+
+            services.AddMassTransit(config => {
+                config.UsingRabbitMq((ctx, cfg) => {
+                    cfg.Host(Configuration["RabbitMq:Host"]);
+                });
+            });
+            services.AddMassTransitHostedService();
         }
 
         public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
