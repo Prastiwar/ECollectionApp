@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using ECollectionApp.WebUI.ViewModels;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ECollectionApp.WebUI.Controllers
@@ -23,6 +25,20 @@ namespace ECollectionApp.WebUI.Controllers
             });
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
         }
+
+        [Authorize]
+        public IActionResult Profile()
+        {
+            ProfileViewModel viewModel = new ProfileViewModel() { 
+                Name = User.FindFirst(c => c.Type == "nickname").Value,
+                Picture = User.FindFirst(c => c.Type == "picture").Value,
+                Email = User.FindFirst(c => c.Type == ClaimTypes.Email).Value,
+                Verified = bool.Parse(User.FindFirst(c => c.Type == "email_verified").Value),
+            };
+            return View(viewModel);
+        }
+
+        public IActionResult Privacy() => View();
 
         public IActionResult Index()
         {

@@ -1,0 +1,21 @@
+﻿@model ProfileViewModel
+@{
+    ViewData["Title"] = "User Profile";
+}
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <h1>ERROR: Authenticate to see your prfile page</h1>
+}
+else
+{
+    <h2 class="m-5 text-center">Welcome in your profile page</h2>
+    <div class="container d-flex justify-content-center align-content-center">
+        <img class="rounded-circle" src="@Model.Picture" width="256" height="256" />
+        <div class="m-5">
+            <h4><b>Nickname:</b> @Model.Name</h4>
+            <h4><b>E-mail:</b> @Model.Email</h4>
+            <h4><b>Verified:</b> @Model.Verified</h4>
+        </div>
+    </div>
+}
