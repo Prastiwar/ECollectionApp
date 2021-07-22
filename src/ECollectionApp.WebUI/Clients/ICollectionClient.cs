@@ -6,7 +6,7 @@ namespace ECollectionApp.WebUI.Clients
 {
     public interface ICollectionClient : ITokenizedClient<ICollectionClient>
     {
-        Task<IEnumerable<CollectionGroup>> GetGroupsAsync(int accountId = 0, bool includeTags = false);
+        Task<IEnumerable<CollectionGroup>> GetGroupsAsync(bool includeTags = false);
         Task<CollectionGroup> GetGroupAsync(int id, bool includeTags = false);
         Task CreateGroupAsync(CollectionGroup group);
         Task UpdateGroupAsync(CollectionGroup group);

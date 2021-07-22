@@ -13,30 +13,16 @@ namespace ECollectionApp.WebUI.Clients
 
         protected override ICollectionClient ReturnClient() => this;
 
-        public async Task<IEnumerable<CollectionGroup>> GetGroupsAsync(int accountId = 0, bool includeTags = false)
+        public async Task<IEnumerable<CollectionGroup>> GetGroupsAsync(bool includeTags = false)
         {
             string url = null;
-            if (accountId > 0)
+            if (includeTags)
             {
-                if (includeTags)
-                {
-                    url = Api.CollectionGroup.GroupsWithTagsUrl(accountId);
-                }
-                else
-                {
-                    url = Api.CollectionGroup.GroupsUrl(accountId);
-                }
+                url = Api.CollectionGroup.GroupsWithTagsUrl();
             }
             else
             {
-                if (includeTags)
-                {
-                    url = Api.CollectionGroup.GroupsWithTagsUrl();
-                }
-                else
-                {
-                    url = Api.CollectionGroup.GroupsUrl();
-                }
+                url = Api.CollectionGroup.GroupsUrl();
             }
             IEnumerable<CollectionGroup> collectionGroups = await GetEntitiesAsync<CollectionGroup>(url);
             return collectionGroups;

@@ -35,7 +35,7 @@ namespace ECollectionApp.WebUI.Controllers
         public async Task<IActionResult> Index()
         {
             ICollectionClient client = await GetCollectionClientAsync();
-            IEnumerable<CollectionGroup> groups = await client.GetGroupsAsync(User.GetAccountId(), true);
+            IEnumerable<CollectionGroup> groups = await client.GetGroupsAsync(true);
             return View(groups);
         }
 

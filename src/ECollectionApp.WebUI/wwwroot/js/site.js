@@ -63,3 +63,13 @@ jQueryAjaxDelete = form => {
     }
     return false; // prevent default form submit event
 }
+
+submitWithValue = (form, name, value) => {
+    var form = document.getElementById(form);
+    var submitInput = document.createElement("input");
+    submitInput.setAttribute("type", "hidden");
+    submitInput.setAttribute("name", name);
+    submitInput.setAttribute("value", value);
+    form.appendChild(submitInput);
+    form.submit();
+}

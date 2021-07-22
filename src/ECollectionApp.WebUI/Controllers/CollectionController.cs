@@ -1,10 +1,12 @@
 ﻿using ECollectionApp.WebUI.Clients;
 using ECollectionApp.WebUI.Data;
+using ECollectionApp.WebUI.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ECollectionApp.WebUI.Controllers
@@ -24,6 +26,46 @@ namespace ECollectionApp.WebUI.Controllers
 
         /// <summary> Return CollectionClient with access token </summary>
         protected async Task<ICollectionClient> GetCollectionClientAsync() => CollectionClient.WithToken(await HttpContext.GetAccessTokenAsync());
+
+        // GET: Collection/Move
+        public async Task<IActionResult> Move(Collection collection)
+        {
+            if (collection.Id == 0 || collection.GroupId == 0)
+            {
+                return BadRequest();
+            }
+            ICollectionClient client = await GetCollectionClientAsync();
+            IEnumerable<CollectionGroup> groups = await client.GetGroupsAsync();
+            CollectionMoveViewModel viewModel = new CollectionMoveViewModel() {
+                Collection = collection,
+                Groups = groups
+            };
+            return View(viewModel);
+        }
+
+        // POST: Collection/Move
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Move(Collection collection, int groupId, bool showGroup = false)
+        {
+            if (collection.GroupId == 0 || groupId == 0)
+            {
+                return BadRequest();
+            }
+            ICollectionClient client = await GetCollectionClientAsync();
+            try
+            {
+                int previousGroupId = collection.GroupId;
+                collection.GroupId = groupId;
+                await client.UpdateCollectionAsync(collection);
+                return RedirectToAction("Details", "CollectionGroup", new { id = showGroup ? groupId : previousGroupId });
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex, $"Couldn't move collection with id: {collection.Id} to group of id: {groupId}");
+                return View(collection);
+            }
+        }
 
         // GET: Collection/Create?groupId=2
         public IActionResult Create([FromQuery] int groupId)

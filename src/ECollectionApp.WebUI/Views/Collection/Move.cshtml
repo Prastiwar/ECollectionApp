@@ -1,0 +1,31 @@
+﻿@model CollectionMoveViewModel
+
+@{ Layout = null; }
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Move" asp-route-collection="@Model.Collection" asp-route-showGroup="@Model.ShowGroup" id="MoveForm" onsubmit="return jQueryAjaxPost(this)">
+            <input type="hidden" asp-for="@Model.Collection.Id" />
+            <input type="hidden" asp-for="@Model.Collection.Name" />
+            <input type="hidden" asp-for="@Model.Collection.Value" />
+            <input type="hidden" asp-for="@Model.Collection.GroupId" />
+            <div class="custom-control custom-checkbox mb-4">
+                <input type="checkbox" asp-for="@Model.ShowGroup" class="custom-control-input">
+                <label class="custom-control-label" asp-for="@Model.ShowGroup">Redirect to selected group</label>
+            </div>
+            <ul class="list-group">
+                @foreach (CollectionGroup group in Model.Groups)
+                {
+                    if (group.Id != Model.Collection.GroupId)
+                    {
+                        <li class="list-group-item d-flex align-items-center">
+                            <button type="button" class="btn btn-lg" style="background-color:transparent;" onclick="return submitWithValue('MoveForm', 'groupId', @group.Id)">
+                                <i class="fa fa-angle-double-right mr-3"></i> @group.Name
+                            </button>
+                        </li>
+                    }
+                }
+            </ul>
+        </form>
+    </div>
+</div>

@@ -15,11 +15,7 @@
         {
             public static string GroupsUrl() => "api/collection-groups";
 
-            public static string GroupsUrl(int accountId) => $"{GroupsUrl()}?accountId={accountId}";
-
             public static string GroupsWithTagsUrl() => GroupsUrl() + "?include=tags";
-
-            public static string GroupsWithTagsUrl(int accountId) => GroupsUrl(accountId) + "&include=tags";
 
             public static string GroupUrl(int id) => $"{GroupsUrl()}/{id}";
 
