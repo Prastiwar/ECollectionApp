@@ -58,6 +58,10 @@ namespace ECollectionApp.CollectionService.Controllers
         [HttpPut("{id}/tags")]
         public async Task<IActionResult> PutTag(int id, Tag[] tags)
         {
+            if (id == 0)
+            {
+                return BadRequest();
+            }
             // Check if ids are concise and update name's if needed
             for (int i = 0; i < tags.Length; i++)
             {
