@@ -1,16 +1,19 @@
 # ECollectionApp
 
-ASP.NET Core Web application with microservices architecture. Collection links, quotes, snippets or any other text-based resource you collect while doing research or any other activity that makes you want to keep these.
+ASP.NET Core Web application with microservices architecture. It keeps your collections like links, quotes, snippets or any other text-based resource you collect while doing research or any other activity that makes you want to keep these in one place.
 
 ## 🏗️ Architecture
 
 Tech stack:
+- .NET 5
 - ASP.NET Core MVC
 - WEB API (ASP.NET Core)
 - Entity Framework Core
 - SQL Server
 - MassTransit + RabbitMq
+- Ocelot
 - Auth0
+- JWT Tokens
 
 ![Architecture](docs/architecture.png)
 
