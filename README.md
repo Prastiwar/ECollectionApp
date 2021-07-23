@@ -4,6 +4,22 @@ ASP.NET Core Web application with microservices architecture. Collection links, 
 
 ## 🏗️ Architecture
 
+Tech stack:
+- ASP.NET Core MVC
+- WEB API (ASP.NET Core)
+- Entity Framework Core
+- SQL Server
+- MassTransit + RabbitMq
+- Auth0
+
+![Architecture](docs/architecture.png)
+
+## 👀 Presentation
+
+![Login](docs/Login.png)
+![Collections](docs/Collections.png)
+![CollectionGroupCards](docs/CollectionGroupCards.png)
+
 ## 🤝 Contributing
 
 You can freely contribute with us by reporting issues and making pull requests!
