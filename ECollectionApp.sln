@@ -19,7 +19,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECollectionApp.AspNetCore.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECollectionApp.AspNetCore.Patch", "src\ECollectionApp.AspNetCore.Patch\ECollectionApp.AspNetCore.Patch.csproj", "{D07A1257-80C8-4AB3-8EA5-DD521EF7DC45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ECollectionApp.CollectionGroupService.Messaging", "src\ECollectionApp.CollectionGroupService.Messaging\ECollectionApp.CollectionGroupService.Messaging.csproj", "{147A3C73-68E4-43BC-A9DE-5817988B4070}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ECollectionApp.CollectionGroupService.Messaging", "src\ECollectionApp.CollectionGroupService.Messaging\ECollectionApp.CollectionGroupService.Messaging.csproj", "{147A3C73-68E4-43BC-A9DE-5817988B4070}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{36249448-06BA-48DD-A015-1893B6E86AB6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "microservices", "microservices", "{AC4D407B-EBC3-40CC-BC64-D682A04B9C3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{81E8853C-2BC5-4582-A9CF-4F4BD1BC4FE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,6 +72,15 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{65A5EF46-B89C-4B4A-BA22-04AA7E6B1184} = {AC4D407B-EBC3-40CC-BC64-D682A04B9C3A}
+		{7FC7B31F-8329-4430-B266-5CF498295457} = {AC4D407B-EBC3-40CC-BC64-D682A04B9C3A}
+		{971993A4-5749-4868-B9A1-0D5E55BDEE6C} = {81E8853C-2BC5-4582-A9CF-4F4BD1BC4FE5}
+		{6316DD53-E9F2-4EDC-A842-8F7781389C90} = {AC4D407B-EBC3-40CC-BC64-D682A04B9C3A}
+		{F46222CB-7B63-4130-8D47-9F2F992950BC} = {81E8853C-2BC5-4582-A9CF-4F4BD1BC4FE5}
+		{D07A1257-80C8-4AB3-8EA5-DD521EF7DC45} = {81E8853C-2BC5-4582-A9CF-4F4BD1BC4FE5}
+		{147A3C73-68E4-43BC-A9DE-5817988B4070} = {AC4D407B-EBC3-40CC-BC64-D682A04B9C3A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A9079E1A-86DB-4026-A64E-61B5B00A2AD0}

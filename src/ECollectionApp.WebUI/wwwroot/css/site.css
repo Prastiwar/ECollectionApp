@@ -37,11 +37,11 @@ html {
 }
 
 .border-top {
-    border-top: 1px solid #e5e5e5;
+    border-top: 1px solid skyblue;
 }
 
 .border-bottom {
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid skyblue;
 }
 
 .box-shadow {
@@ -74,7 +74,6 @@ body {
     line-height: 60px; /* Vertically center the text there */
 }
 
-
 /* Change input control border color */
 .form-control, .input-group-text {
     border: 1px solid #0080ff;
@@ -101,4 +100,8 @@ a.btn:hover {
 .bg-full {
     height: 100vh;
     background-size: cover;
+}
+
+.bg-nav {
+    background: #3172c6;
 }

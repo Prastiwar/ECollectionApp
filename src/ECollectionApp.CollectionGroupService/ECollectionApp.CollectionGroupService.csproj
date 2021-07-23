@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ECollectionApp.CollectionGroupService.Messaging\ECollectionApp.CollectionGroupService.Messaging.csproj" />
+    <ProjectReference Include="..\ECollectionApp.CollectionGroupService.Messaging\ECollectionApp.CollectionGroupService.Messaging.csproj" />
     <ProjectReference Include="..\ECollectionApp.AspNetCore.Extensions\ECollectionApp.AspNetCore.Microservice.csproj" />
   </ItemGroup>
 

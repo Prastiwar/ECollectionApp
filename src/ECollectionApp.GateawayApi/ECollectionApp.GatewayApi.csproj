@@ -15,7 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\ECollectionApp.AspNetCore.Serialization\ECollectionApp.AspNetCore.Serialization.csproj" />
+    <ProjectReference Include="..\ECollectionApp.AspNetCore.Serialization\ECollectionApp.AspNetCore.Serialization.csproj" />
   </ItemGroup>
 
 </Project>
