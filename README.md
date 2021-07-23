@@ -17,11 +17,17 @@ Tech stack:
 
 ![Architecture](docs/architecture.png)
 
-## 👀 Presentation
+## 👀 Demonstration
 
 ![Login](docs/Login.png)
 ![Collections](docs/Collections.png)
 ![CollectionGroupCards](docs/CollectionGroupCards.png)
+
+## 💡 Proof of concept
+
+The goal of this project is to apply and demonstrate microservice architecture in relatively small area as collecting text-based resources. There are many areas to improve, but I want to keep it simple to show how microservices architecture can be applied in this case.
+
+Only local hosting was used there for simplicity. Auth0 was used for authentication and JWT tokens were used for authorization. Auth0 is a cloud service that provides a single sign-on solution for your applications and is described here as Auth microservice. Frontend is pretty basic and its goal was not to provide a full-featured frontend for the backend.
 
 ## 🤝 Contributing
 
